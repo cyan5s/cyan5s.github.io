@@ -1,0 +1,428 @@
+<!DOCTYPE html><html lang="ch" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>网站框架学习 | cyan5s's blog</title><meta name="author" content="cyan5s"><meta name="copyright" content="cyan5s"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="【1】前端基础html&amp;css&amp;js   技术类型 主要功能 在代码中的表现形式    HTML 定义网页结构和内容 所有标签（如 &lt;div&gt;, &lt;script&gt;, &lt;style&gt;）及其属性（如 id, class, src）   CSS 定义网页元素的样式和外观 style属性内的代码 和 &lt;style&gt;标签内的代码   JS (J">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网站框架学习">
+<meta property="og:url" content="http://cyan5s.github.io/2025/09/21/%E7%BD%91%E7%AB%99%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="cyan5s&#39;s blog">
+<meta property="og:description" content="【1】前端基础html&amp;css&amp;js   技术类型 主要功能 在代码中的表现形式    HTML 定义网页结构和内容 所有标签（如 &lt;div&gt;, &lt;script&gt;, &lt;style&gt;）及其属性（如 id, class, src）   CSS 定义网页元素的样式和外观 style属性内的代码 和 &lt;style&gt;标签内的代码   JS (J">
+<meta property="og:locale">
+<meta property="og:image" content="http://cyan5s.github.io/img/cyan5s.jpg">
+<meta property="article:published_time" content="2025-09-21T09:31:46.000Z">
+<meta property="article:modified_time" content="2025-11-22T04:32:50.418Z">
+<meta property="article:author" content="cyan5s">
+<meta property="article:tag" content="PHP SQL 前端">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://cyan5s.github.io/img/cyan5s.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "网站框架学习",
+  "url": "http://cyan5s.github.io/2025/09/21/%E7%BD%91%E7%AB%99%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/",
+  "image": "http://cyan5s.github.io/img/cyan5s.jpg",
+  "datePublished": "2025-09-21T09:31:46.000Z",
+  "dateModified": "2025-11-22T04:32:50.418Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "cyan5s",
+      "url": "http://cyan5s.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://cyan5s.github.io/2025/09/21/%E7%BD%91%E7%AB%99%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '网站框架学习',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.0.0"></head><body><div id="web_bg" style="background-image: url(/img/background.jpg);"></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: transparent;"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">cyan5s's blog</span></a><a class="nav-page-title" href="/"><span class="site-name">网站框架学习</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">网站框架学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-09-21T09:31:46.000Z" title="Created 2025-09-21 17:31:46">2025-09-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-11-22T04:32:50.418Z" title="Updated 2025-11-22 12:32:50">2025-11-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/WEB/">WEB</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="【1】前端基础"><a href="#【1】前端基础" class="headerlink" title="【1】前端基础"></a>【1】前端基础</h1><h2 id="html-css-js"><a href="#html-css-js" class="headerlink" title="html&amp;css&amp;js"></a>html&amp;css&amp;js</h2><table>
+<thead>
+<tr>
+<th align="left">技术类型</th>
+<th align="left">主要功能</th>
+<th align="left">在代码中的表现形式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>HTML</strong></td>
+<td align="left">定义网页<strong>结构和内容</strong></td>
+<td align="left">所有标签（如 <code>&lt;div&gt;</code>, <code>&lt;script&gt;</code>, <code>&lt;style&gt;</code>）及其属性（如 <code>id</code>, <code>class</code>, <code>src</code>）</td>
+</tr>
+<tr>
+<td align="left"><strong>CSS</strong></td>
+<td align="left">定义网页元素的<strong>样式和外观</strong></td>
+<td align="left"><code>style</code>属性内的代码 和 <code>&lt;style&gt;</code>标签内的代码</td>
+</tr>
+<tr>
+<td align="left"><strong>JS (JavaScript)</strong></td>
+<td align="left">定义网页的<strong>行为和交互逻辑</strong></td>
+<td align="left"><code>&lt;script&gt;</code>标签内的代码 或 通过 <code>src</code>属性引入的外部脚本</td>
+</tr>
+</tbody></table>
+<h1 id="【2】PHP"><a href="#【2】PHP" class="headerlink" title="【2】PHP"></a>【2】PHP</h1><h2 id="基本特点"><a href="#基本特点" class="headerlink" title="基本特点"></a>基本特点</h2><ul>
+<li><strong>服务器端执行</strong>：PHP 代码在<strong>服务器上运行</strong>，生成 HTML 后发送给浏览器，用户看不到 PHP 源码。</li>
+<li>通常运行在 <strong>Apache</strong> 或 <strong>Nginx</strong> 服务器上。支持多种数据库，常用于构建 CMS、电商网站、论坛等。</li>
+<li><strong>开源</strong></li>
+</ul>
+<h2 id="基础语法"><a href="#基础语法" class="headerlink" title="基础语法"></a>基础语法</h2><ul>
+<li><p>通常嵌入在 HTML 中，以 <code>&lt;?php</code>开头，以 <code>?&gt;</code>结尾。</p>
+</li>
+<li><p>注释：</p>
+<ul>
+<li><p>单行注释：<code>//</code>或 <code>#</code></p>
+</li>
+<li><p>多行注释：<code>/* ... */</code></p>
+</li>
+</ul>
+</li>
+<li><p>变量以 <code>$</code>开头，无需声明类型（动态类型语言）</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$name</span> = <span class="string">&quot;张三&quot;</span>;  <span class="comment">// 字符串</span></span><br><span class="line">    <span class="variable">$age</span> = <span class="number">25</span>;      <span class="comment">// 整数</span></span><br><span class="line">    <span class="variable">$price</span> = <span class="number">19.99</span>; <span class="comment">// 浮点数</span></span><br><span class="line">    <span class="variable">$isStudent</span> = <span class="literal">true</span>; <span class="comment">// 布尔值</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;姓名：&quot;</span> . <span class="variable">$name</span> . <span class="string">&quot;&lt;br&gt;&quot;</span>; <span class="comment">// 字符串拼接用 .</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;年龄：&quot;</span> . (<span class="variable">$age</span> + <span class="number">5</span>);     <span class="comment">// 数学运算</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">姓名：张三</span><br><span class="line">年龄：30</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>条件判断（if-else）</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$score</span> = <span class="number">85</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable">$score</span> &gt;= <span class="number">90</span>) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;优秀！&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">elseif</span> (<span class="variable">$score</span> &gt;= <span class="number">60</span>) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;及格！&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;不及格！&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>循环（for &#x2F; while）</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="comment">// for 循环</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="variable">$i</span> = <span class="number">1</span>; <span class="variable">$i</span> &lt;= <span class="number">5</span>; <span class="variable">$i</span>++) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;数字：&quot;</span> . <span class="variable">$i</span> . <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// while 循环</span></span><br><span class="line">    <span class="variable">$j</span> = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span> (<span class="variable">$j</span> &lt;= <span class="number">3</span>) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;计数：&quot;</span> . <span class="variable">$j</span> . <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">        <span class="variable">$j</span>++;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>数组（Array）</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="comment">// 索引数组</span></span><br><span class="line">    <span class="variable">$fruits</span> = [<span class="string">&quot;苹果&quot;</span>, <span class="string">&quot;香蕉&quot;</span>, <span class="string">&quot;橙子&quot;</span>];</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$fruits</span>[<span class="number">1</span>]; <span class="comment">// 输出 &quot;香蕉&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 关联数组</span></span><br><span class="line">    <span class="variable">$user</span> = [</span><br><span class="line">        <span class="string">&quot;name&quot;</span> =&gt; <span class="string">&quot;李四&quot;</span>,</span><br><span class="line">        <span class="string">&quot;age&quot;</span> =&gt; <span class="number">30</span>,</span><br><span class="line">        <span class="string">&quot;email&quot;</span> =&gt; <span class="string">&quot;lisi@example.com&quot;</span></span><br><span class="line">    ];</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$user</span>[<span class="string">&quot;name&quot;</span>]; <span class="comment">// 输出 &quot;李四&quot;</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="与-HTML-结合"><a href="#与-HTML-结合" class="headerlink" title="与 HTML 结合"></a>与 HTML 结合</h2><p>动态生成 HTML 内容</p>
+<p>EG.从数据库获取数据并显示</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;用户列表&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;h1&gt;用户列表&lt;/h1&gt;</span><br><span class="line">    &lt;table border=&quot;1&quot;&gt;</span><br><span class="line">        &lt;tr&gt;</span><br><span class="line">            &lt;th&gt;ID&lt;/th&gt;</span><br><span class="line">            &lt;th&gt;姓名&lt;/th&gt;</span><br><span class="line">            &lt;th&gt;邮箱&lt;/th&gt;</span><br><span class="line">        &lt;/tr&gt;</span><br><span class="line">        &lt;?php</span><br><span class="line">            // 模拟数据库查询</span><br><span class="line">            $users = [</span><br><span class="line">                [&quot;id&quot; =&gt; 1, &quot;name&quot; =&gt; &quot;张三&quot;, &quot;email&quot; =&gt; &quot;zhangsan@example.com&quot;],</span><br><span class="line">                [&quot;id&quot; =&gt; 2, &quot;name&quot; =&gt; &quot;李四&quot;, &quot;email&quot; =&gt; &quot;lisi@example.com&quot;]</span><br><span class="line">            ];</span><br><span class="line"></span><br><span class="line">            foreach ($users as $user) &#123;</span><br><span class="line">                echo &quot;&lt;tr&gt;&quot;;</span><br><span class="line">                echo &quot;&lt;td&gt;&quot; . $user[&quot;id&quot;] . &quot;&lt;/td&gt;&quot;;</span><br><span class="line">                echo &quot;&lt;td&gt;&quot; . $user[&quot;name&quot;] . &quot;&lt;/td&gt;&quot;;</span><br><span class="line">                echo &quot;&lt;td&gt;&quot; . $user[&quot;email&quot;] . &quot;&lt;/td&gt;&quot;;</span><br><span class="line">                echo &quot;&lt;/tr&gt;&quot;;</span><br><span class="line">            &#125;</span><br><span class="line">        ?&gt;</span><br><span class="line">    &lt;/table&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="left">ID</th>
+<th align="left">姓名</th>
+<th align="left">邮箱</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="left">张三</td>
+<td align="left"><a href="mailto:&#122;&#x68;&#97;&#110;&#x67;&#115;&#97;&#110;&#x40;&#101;&#x78;&#97;&#x6d;&#x70;&#x6c;&#101;&#x2e;&#99;&#x6f;&#x6d;">zhangsan@example.com</a></td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">李四</td>
+<td align="left"><a href="mailto:&#108;&#105;&#115;&#x69;&#x40;&#x65;&#120;&#97;&#x6d;&#112;&#108;&#101;&#x2e;&#x63;&#111;&#x6d;">lisi@example.com</a></td>
+</tr>
+</tbody></table>
+<h2 id="连接数据库（MySQL）"><a href="#连接数据库（MySQL）" class="headerlink" title="连接数据库（MySQL）"></a>连接数据库（MySQL）</h2><p>数据存储和查询</p>
+<p>EG.查询数据库并显示结果</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="comment">// 1. 连接数据库</span></span><br><span class="line">    <span class="variable">$conn</span> = <span class="title function_ invoke__">mysqli_connect</span>(<span class="string">&quot;localhost&quot;</span>, <span class="string">&quot;root&quot;</span>, <span class="string">&quot;password&quot;</span>, <span class="string">&quot;mydb&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 检查连接</span></span><br><span class="line">    <span class="keyword">if</span> (!<span class="variable">$conn</span>) &#123;</span><br><span class="line">        <span class="keyword">die</span>(<span class="string">&quot;数据库连接失败: &quot;</span> . <span class="title function_ invoke__">mysqli_connect_error</span>());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 执行 SQL 查询</span></span><br><span class="line">    <span class="variable">$sql</span> = <span class="string">&quot;SELECT id, name, email FROM users&quot;</span>;</span><br><span class="line">    <span class="variable">$result</span> = <span class="title function_ invoke__">mysqli_query</span>(<span class="variable">$conn</span>, <span class="variable">$sql</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 4. 遍历结果</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="variable">$row</span> = <span class="title function_ invoke__">mysqli_fetch_assoc</span>(<span class="variable">$result</span>)) &#123;</span><br><span class="line">        <span class="keyword">echo</span> <span class="string">&quot;ID: &quot;</span> . <span class="variable">$row</span>[<span class="string">&quot;id&quot;</span>] . <span class="string">&quot;, 姓名: &quot;</span> . <span class="variable">$row</span>[<span class="string">&quot;name&quot;</span>] . <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 5. 关闭连接</span></span><br><span class="line">    <span class="title function_ invoke__">mysqli_close</span>(<span class="variable">$conn</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="表单处理（-GET、-POST）"><a href="#表单处理（-GET、-POST）" class="headerlink" title="*表单处理（$_GET、$_POST）"></a>*表单处理（$_GET、$_POST）</h2><h3 id="使用-GET接收数据"><a href="#使用-GET接收数据" class="headerlink" title="使用 $_GET接收数据"></a>使用 $_GET接收数据</h3><h4 id="（1）HTML-表单（GET-方法）"><a href="#（1）HTML-表单（GET-方法）" class="headerlink" title="（1）HTML 表单（GET 方法）"></a>（1）HTML 表单（GET 方法）</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;form action=&quot;process.php&quot; method=&quot;get&quot;&gt;</span><br><span class="line">    &lt;input type=&quot;text&quot; name=&quot;username&quot; placeholder=&quot;用户名&quot;&gt;</span><br><span class="line">    &lt;input type=&quot;submit&quot; value=&quot;提交&quot;&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://free.picui.cn/free/2025/11/22/692138abd1c79.png" alt="image-20250920202457515.png"></p>
+<ul>
+<li>输入内容显示在url里</li>
+</ul>
+<h4 id="（2）PHP-处理-GET-数据"><a href="#（2）PHP-处理-GET-数据" class="headerlink" title="（2）PHP 处理 GET 数据"></a>（2）PHP 处理 GET 数据</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    $username = $_GET[&#x27;username&#x27;]; // 获取 URL 中的参数</span><br><span class="line">    echo &quot;你输入的用户名是：&quot; . htmlspecialchars($username);</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong><code>htmlspecialchars()</code></strong> 防止 XSS 攻击（转义特殊字符）。</li>
+</ul>
+<h3 id="使用-POST接收数据"><a href="#使用-POST接收数据" class="headerlink" title="使用 $_POST接收数据"></a>使用 $_POST接收数据</h3><h4 id="（1）HTML-表单（POST-方法）"><a href="#（1）HTML-表单（POST-方法）" class="headerlink" title="（1）HTML 表单（POST 方法）"></a>（1）HTML 表单（POST 方法）</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;form action=&quot;process.php&quot; method=&quot;post&quot;&gt;</span><br><span class="line">    &lt;input type=&quot;password&quot; name=&quot;password&quot; placeholder=&quot;密码&quot;&gt;</span><br><span class="line">    &lt;input type=&quot;submit&quot; value=&quot;提交&quot;&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>数据在http请求体内</li>
+</ul>
+<h4 id="（2）PHP-处理-POST-数据"><a href="#（2）PHP-处理-POST-数据" class="headerlink" title="（2）PHP 处理 POST 数据"></a>（2）PHP 处理 POST 数据</h4><p>在 <code>process.php</code>中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    $password = $_POST[&#x27;password&#x27;]; // 获取 POST 数据</span><br><span class="line">    echo &quot;你的密码（已隐藏）&quot;;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="【3】SQL"><a href="#【3】SQL" class="headerlink" title="【3】SQL"></a>【3】SQL</h1><h2 id="基础查询"><a href="#基础查询" class="headerlink" title="基础查询"></a>基础查询</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees;</span><br></pre></td></tr></table></figure>
+
+<h3 id="DISTINCT"><a href="#DISTINCT" class="headerlink" title="DISTINCT"></a>DISTINCT</h3><p>去除重复行</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">DISTINCT</span> department <span class="keyword">FROM</span> employees;</span><br></pre></td></tr></table></figure>
+
+<h2 id="条件查询"><a href="#条件查询" class="headerlink" title="条件查询"></a>条件查询</h2><h3 id="WHERE"><a href="#WHERE" class="headerlink" title="WHERE"></a>WHERE</h3><p>过滤记录</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees </span><br><span class="line"><span class="keyword">WHERE</span> salary <span class="operator">&gt;</span> <span class="number">50000</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h3><h4 id="比较运算符"><a href="#比较运算符" class="headerlink" title="比较运算符"></a>比较运算符</h4><ul>
+<li><code>=</code>等于</li>
+<li><code>&lt;&gt;</code>或 <code>!=</code>不等于</li>
+<li><code>&gt;</code>大于</li>
+<li><code>&lt;</code>小于</li>
+<li><code>&gt;=</code>大于等于</li>
+<li><code>&lt;=</code>小于等于</li>
+</ul>
+<h4 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h4><ul>
+<li><code>AND</code></li>
+<li><code>OR</code></li>
+<li><code>NOT</code></li>
+</ul>
+<h3 id="BETWEEN"><a href="#BETWEEN" class="headerlink" title="BETWEEN"></a>BETWEEN</h3><p>选择范围内的值</p>
+<h3 id="IN"><a href="#IN" class="headerlink" title="IN"></a>IN</h3><p>匹配多个可能值</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> customers</span><br><span class="line"><span class="keyword">WHERE</span> country <span class="keyword">IN</span> (<span class="string">&#x27;USA&#x27;</span>, <span class="string">&#x27;UK&#x27;</span>, <span class="string">&#x27;Canada&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="LIKE"><a href="#LIKE" class="headerlink" title="LIKE"></a>LIKE</h3><p>模式匹配</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> customers</span><br><span class="line"><span class="keyword">WHERE</span> name <span class="keyword">LIKE</span> <span class="string">&#x27;J%&#x27;</span>;  <span class="comment">-- 以J开头</span></span><br></pre></td></tr></table></figure>
+
+<p>通配符：</p>
+<p>%任意多个字符</p>
+<p>_单个字符</p>
+<h2 id="排序和限制"><a href="#排序和限制" class="headerlink" title="排序和限制"></a>排序和限制</h2><h3 id="ORDER-BY"><a href="#ORDER-BY" class="headerlink" title="ORDER BY"></a>ORDER BY</h3><p>排序</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> salary <span class="keyword">DESC</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> employees</span><br><span class="line"><span class="keyword">ORDER</span> <span class="keyword">BY</span> department <span class="keyword">ASC</span>, salary <span class="keyword">DESC</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="LIMIT"><a href="#LIMIT" class="headerlink" title="LIMIT"></a>LIMIT</h3><p>限制返回行数</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> products</span><br><span class="line">LIMIT <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+<p>分页查询</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> products</span><br><span class="line">LIMIT <span class="number">10</span> <span class="keyword">OFFSET</span> <span class="number">20</span>;  <span class="comment">-- 跳过20行，取10行</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="聚合函数"><a href="#聚合函数" class="headerlink" title="聚合函数"></a>聚合函数</h2><ul>
+<li><code>COUNT()</code>计数</li>
+<li><code>SUM()</code>求和</li>
+<li><code>AVG()</code>平均值</li>
+<li><code>MAX()</code>最大值</li>
+<li><code>MIN()</code>最小值</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="built_in">COUNT</span>(<span class="operator">*</span>) <span class="keyword">FROM</span> employees;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> <span class="built_in">AVG</span>(salary) <span class="keyword">FROM</span> employees</span><br><span class="line"><span class="keyword">WHERE</span> department <span class="operator">=</span> <span class="string">&#x27;Sales&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> department, <span class="built_in">COUNT</span>(<span class="operator">*</span>) <span class="keyword">as</span> employee_count</span><br><span class="line"><span class="keyword">FROM</span> employees</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> department;</span><br></pre></td></tr></table></figure>
+
+<h3 id="HAVING"><a href="#HAVING" class="headerlink" title="HAVING"></a>HAVING</h3><p>过滤分组结果</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> department, <span class="built_in">AVG</span>(salary) <span class="keyword">as</span> avg_salary</span><br><span class="line"><span class="keyword">FROM</span> employees</span><br><span class="line"><span class="keyword">GROUP</span> <span class="keyword">BY</span> department</span><br><span class="line"><span class="keyword">HAVING</span> <span class="built_in">AVG</span>(salary) <span class="operator">&gt;</span> <span class="number">50000</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="多表查询"><a href="#多表查询" class="headerlink" title="多表查询"></a>多表查询</h2><h3 id="连接查询"><a href="#连接查询" class="headerlink" title="连接查询"></a>连接查询</h3><ul>
+<li><code>INNER JOIN</code>内连接</li>
+<li><code>LEFT JOIN</code>左连接</li>
+<li><code>RIGHT JOIN</code>右连接</li>
+<li><code>FULL JOIN</code>全连接</li>
+</ul>
+<p>EG.内连接</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> e.name, d.department_name</span><br><span class="line"><span class="keyword">FROM</span> employees e</span><br><span class="line"><span class="keyword">INNER</span> <span class="keyword">JOIN</span> departments d <span class="keyword">ON</span> e.department_id <span class="operator">=</span> d.id;</span><br></pre></td></tr></table></figure>
+
+<h3 id="子查询"><a href="#子查询" class="headerlink" title="子查询"></a>子查询</h3><p>在查询中嵌套查询</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> name </span><br><span class="line"><span class="keyword">FROM</span> employees</span><br><span class="line"><span class="keyword">WHERE</span> salary <span class="operator">&gt;</span> (<span class="keyword">SELECT</span> <span class="built_in">AVG</span>(salary) <span class="keyword">FROM</span> employees);</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据操作语句"><a href="#数据操作语句" class="headerlink" title="数据操作语句"></a>数据操作语句</h2><h3 id="INSERT"><a href="#INSERT" class="headerlink" title="INSERT"></a>INSERT</h3><p>插入新记录</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT INTO</span> employees (name, salary, department)</span><br><span class="line"><span class="keyword">VALUES</span> (<span class="string">&#x27;John Doe&#x27;</span>, <span class="number">75000</span>, <span class="string">&#x27;IT&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="UPDATE"><a href="#UPDATE" class="headerlink" title="UPDATE"></a>UPDATE</h3><p>更新记录</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> employees</span><br><span class="line"><span class="keyword">SET</span> salary <span class="operator">=</span> <span class="number">80000</span></span><br><span class="line"><span class="keyword">WHERE</span> id <span class="operator">=</span> <span class="number">101</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="DELETE"><a href="#DELETE" class="headerlink" title="DELETE"></a>DELETE</h3><p>删除记录</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DELETE</span> <span class="keyword">FROM</span> employees</span><br><span class="line"><span class="keyword">WHERE</span> id <span class="operator">=</span> <span class="number">101</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="高级查询"><a href="#高级查询" class="headerlink" title="高级查询"></a>高级查询</h2><h3 id="UNION"><a href="#UNION" class="headerlink" title="UNION"></a>UNION</h3><p>联合查询，合并多个查询结果</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> name <span class="keyword">FROM</span> employees</span><br><span class="line"><span class="keyword">UNION</span></span><br><span class="line"><span class="keyword">SELECT</span> name <span class="keyword">FROM</span> contractors;</span><br></pre></td></tr></table></figure>
+
+<h1 id="【4】简单动态网站（html-php-sql）"><a href="#【4】简单动态网站（html-php-sql）" class="headerlink" title="【4】简单动态网站（html&amp;php&amp;sql）"></a>【4】简单动态网站（html&amp;php&amp;sql）</h1><h2 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h2><h3 id="html-php"><a href="#html-php" class="headerlink" title="html&amp;php"></a>html&amp;php</h3><p>动态网站的部分前端代码是后端php动态生成的html，由echo或print输出，为动态HTML。</p>
+<table>
+<thead>
+<tr>
+<th align="left">内容类型</th>
+<th align="left">占比</th>
+<th align="left">特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">静态HTML</td>
+<td align="left">30-50%</td>
+<td align="left">页面框架、UI结构、固定内容</td>
+</tr>
+<tr>
+<td align="left">动态HTML</td>
+<td align="left">50-70%</td>
+<td align="left">数据展示、条件内容、循环结构</td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt; &lt;!-- 静态部分 --&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;&lt;?php echo $pageTitle; ?&gt;&lt;/title&gt; &lt;!-- 动态部分 --&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;?php include &#x27;header.php&#x27;; ?&gt; &lt;!-- 静态包含 --&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;main&gt;</span><br><span class="line">        &lt;h1&gt;欢迎&lt;/h1&gt;</span><br><span class="line">        &lt;?php if($userLoggedIn): ?&gt; &lt;!-- 条件动态内容 --&gt;</span><br><span class="line">            &lt;p&gt;您好，&lt;?= htmlspecialchars($userName) ?&gt;！&lt;/p&gt;</span><br><span class="line">        &lt;?php else: ?&gt;</span><br><span class="line">            &lt;p&gt;请&lt;a href=&quot;login.php&quot;&gt;登录&lt;/a&gt;&lt;/p&gt;</span><br><span class="line">        &lt;?php endif; ?&gt;</span><br><span class="line">    &lt;/main&gt;</span><br><span class="line">    </span><br><span class="line">    &lt;?php include &#x27;footer.php&#x27;; ?&gt; &lt;!-- 静态包含 --&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>大多数开发者会套用模板</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用Twig模板引擎示例</span></span><br><span class="line">&#123;&#123; <span class="keyword">include</span>(<span class="string">&#x27;header.html&#x27;</span>) &#125;&#125;</span><br><span class="line"></span><br><span class="line">&#123;% <span class="keyword">for</span> product in products %&#125;</span><br><span class="line">    &lt;div <span class="class"><span class="keyword">class</span>=&quot;<span class="title">product</span>&quot;&gt;</span></span><br><span class="line"><span class="class">        &lt;<span class="title">h3</span>&gt;</span>&#123;&#123; product.name &#125;&#125;&lt;/h3&gt;</span><br><span class="line">        &lt;p&gt;价格: ¥&#123;&#123; product.price &#125;&#125;&lt;/p&gt;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">&#123;% <span class="keyword">endfor</span> %&#125;</span><br><span class="line"></span><br><span class="line">&#123;&#123; <span class="keyword">include</span>(<span class="string">&#x27;footer.html&#x27;</span>) &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h2><h3 id="数据库-php"><a href="#数据库-php" class="headerlink" title="数据库&amp;php"></a>数据库&amp;php</h3><p><code>浏览器请求</code>-&gt;<code>php接受请求</code>-&gt;<code>php脚本链接数据库</code>-&gt;<code>php脚本构造SQL查询语句</code>-&gt;<code>数据库执行查询</code>-&gt;<code>php处理结果</code>-&gt;<code>生成html</code>-&gt;<code>返回浏览器</code></p>
+<h2 id="前后端交互"><a href="#前后端交互" class="headerlink" title="前后端交互"></a>前后端交互</h2><h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><p>浏览器请求 → 服务器接收 → PHP处理 → 数据库操作 → PHP生成HTML → 服务器响应 → 浏览器渲染</p>
+<h3 id="主要方式"><a href="#主要方式" class="headerlink" title="主要方式"></a>主要方式</h3><h4 id="表单提交（同步）"><a href="#表单提交（同步）" class="headerlink" title="表单提交（同步）"></a>表单提交（同步）</h4><p>用户登录、注册、数据提交</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 前端HTML --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;login.php&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> <span class="attr">required</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;password&quot;</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">required</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span>&gt;</span>登录<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 后端PHP处理 (login.php)</span></span><br><span class="line"><span class="variable">$username</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;username&#x27;</span>];</span><br><span class="line"><span class="variable">$password</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;password&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 验证处理...</span></span><br><span class="line"><span class="keyword">if</span>(<span class="title function_ invoke__">authenticateUser</span>(<span class="variable">$username</span>, <span class="variable">$password</span>)) &#123;</span><br><span class="line">    <span class="title function_ invoke__">header</span>(<span class="string">&quot;Location: dashboard.php&quot;</span>); <span class="comment">// 成功跳转</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_ invoke__">header</span>(<span class="string">&quot;Location: login.php?error=1&quot;</span>); <span class="comment">// 失败返回</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>特点</strong>：</p>
+<ul>
+<li>页面会刷新</li>
+<li>数据通过HTTP body传输</li>
+<li>适合关键数据操作</li>
+</ul>
+<h4 id="AJAX请求（异步）"><a href="#AJAX请求（异步）" class="headerlink" title="AJAX请求（异步）"></a>AJAX请求（异步）</h4><p>实时搜索、无刷新点赞、动态加载</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 前端JavaScript</span></span><br><span class="line"><span class="title function_">fetch</span>(<span class="string">&#x27;api/get-products.php&#x27;</span>, &#123;</span><br><span class="line">    <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">    <span class="attr">headers</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; <span class="attr">category</span>: <span class="string">&#x27;electronics&#x27;</span> &#125;)</span><br><span class="line">&#125;)</span><br><span class="line">.<span class="title function_">then</span>(<span class="function"><span class="params">response</span> =&gt;</span> response.<span class="title function_">json</span>())</span><br><span class="line">.<span class="title function_">then</span>(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 动态更新页面</span></span><br><span class="line">    <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;products&#x27;</span>).<span class="property">innerHTML</span> = </span><br><span class="line">        data.<span class="title function_">map</span>(<span class="function"><span class="params">product</span> =&gt;</span> <span class="string">`&lt;div&gt;<span class="subst">$&#123;product.name&#125;</span>&lt;/div&gt;`</span>).<span class="title function_">join</span>(<span class="string">&#x27;&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 后端API (get-products.php)</span></span><br><span class="line"><span class="title function_ invoke__">header</span>(<span class="string">&#x27;Content-Type: application/json&#x27;</span>);</span><br><span class="line"><span class="variable">$input</span> = <span class="title function_ invoke__">json_decode</span>(<span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;php://input&#x27;</span>), <span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$products</span> = <span class="title function_ invoke__">getProductsByCategory</span>(<span class="variable">$input</span>[<span class="string">&#x27;category&#x27;</span>]);</span><br><span class="line"><span class="keyword">echo</span> <span class="title function_ invoke__">json_encode</span>(<span class="variable">$products</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>特点</strong>：</p>
+<ul>
+<li>页面无刷新</li>
+<li>数据通常使用JSON格式</li>
+<li>适合频繁的小数据交互</li>
+</ul>
+<h4 id="Cookie-Session机制"><a href="#Cookie-Session机制" class="headerlink" title="Cookie&#x2F;Session机制"></a>Cookie&#x2F;Session机制</h4><p>用户状态保持</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 后端设置登录状态</span></span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"><span class="variable">$_SESSION</span>[<span class="string">&#x27;user_id&#x27;</span>] = <span class="number">123</span>;  <span class="comment">// 存储在服务器</span></span><br><span class="line"><span class="title function_ invoke__">setcookie</span>(<span class="string">&#x27;username&#x27;</span>, <span class="string">&#x27;john&#x27;</span>, <span class="title function_ invoke__">time</span>()+<span class="number">3600</span>); <span class="comment">// 存储在客户端</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 前端读取</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="variable language_">document</span>.<span class="property">cookie</span>); <span class="comment">// 只能读取非HttpOnly的cookie</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>数据流向</strong>：</p>
+<p>PHP: setcookie() → HTTP响应头 → 浏览器存储 → 后续请求自动携带</p>
+<h4 id="URL参数与重定向"><a href="#URL参数与重定向" class="headerlink" title="URL参数与重定向"></a>URL参数与重定向</h4><p>分页、筛选、简单状态传递</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// PHP生成带参数的链接</span></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;&lt;a href=&#x27;products.php?page=2&amp;sort=price&#x27;&gt;下一页&lt;/a&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 接收处理</span></span><br><span class="line"><span class="variable">$page</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;page&#x27;</span>] ?? <span class="number">1</span>;</span><br><span class="line"><span class="variable">$sort</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;sort&#x27;</span>] ?? <span class="string">&#x27;id&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据格式与传输"><a href="#数据格式与传输" class="headerlink" title="数据格式与传输"></a>数据格式与传输</h3><table>
+<thead>
+<tr>
+<th align="left">格式</th>
+<th align="left">适用场景</th>
+<th align="left">PHP处理方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">FormData</td>
+<td align="left">表单提交</td>
+<td align="left"><code>$_POST/$_GET</code></td>
+</tr>
+<tr>
+<td align="left">JSON</td>
+<td align="left">API接口</td>
+<td align="left"><code>json_decode(file_get_contents(&#39;php://input&#39;))</code></td>
+</tr>
+<tr>
+<td align="left">XML</td>
+<td align="left">传统Web服务</td>
+<td align="left"><code>SimpleXML</code>扩展</td>
+</tr>
+</tbody></table>
+<h4 id="文件上传处理"><a href="#文件上传处理" class="headerlink" title="文件上传处理"></a>文件上传处理</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">form</span> <span class="attr">enctype</span>=<span class="string">&quot;multipart/form-data&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;file&quot;</span> <span class="attr">name</span>=<span class="string">&quot;avatar&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;form enctype=<span class="string">&quot;multipart/form-data&quot;</span> method=<span class="string">&quot;POST&quot;</span>&gt;</span><br><span class="line">    &lt;input type=<span class="string">&quot;file&quot;</span> name=<span class="string">&quot;avatar&quot;</span>&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://cyan5s.github.io">cyan5s</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://cyan5s.github.io/2025/09/21/%E7%BD%91%E7%AB%99%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/">http://cyan5s.github.io/2025/09/21/%E7%BD%91%E7%AB%99%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/PHP-SQL-%E5%89%8D%E7%AB%AF/">PHP SQL 前端</a></div><div class="post-share"><div class="social-share" data-image="/img/cyan5s.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/09/27/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/" title="逻辑漏洞学习"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">逻辑漏洞学习</div></div><div class="info-2"><div class="info-item-1">【1-1】逻辑漏洞权限提升&amp;越权访问垂直越权低权限用户通过某种方式（如修改参数、直接访问URL）获取了高权限用户（如管理员）的功能权限。   普通用户通过抓包，将访问/user/profile的请求改为/admin/deleteUser，如果后端没有校验角色，则可能成功执行删除用户的操作。 在Cookie或JWT令牌中修改role: user为role: admin。   水平越权相同权限级别的用户A可以访问或操作用户B的数据。   在查看个人订单时，URL为/order?id=10086，用户A通过修改id参数为10087，成功看到了用户B的订单详情。 通过修改请求参数（如用户ID、手机号、邮箱）来重置他人密码、查看他人信息等。   不安全的对象直接引用一种具体的越权形式，应用程序在内部使用文件名、数据库主键等直接作为标识符，并在没有授权检查的情况下向用户暴露这些标识符。   /downloadFile?filename=confidential.pdf，攻击者通过遍历filename参数下载所有敏感文件。   业务流程漏洞验证机制绕过  密码重置绕过 ：  在重置密码...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/cyan5s.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">cyan5s</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div><a id="card-info-btn" href="https://cyan5s.github.io/"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E3%80%901%E3%80%91%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80"><span class="toc-number">1.</span> <span class="toc-text">【1】前端基础</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#html-css-js"><span class="toc-number">1.1.</span> <span class="toc-text">html&amp;css&amp;js</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E3%80%902%E3%80%91PHP"><span class="toc-number">2.</span> <span class="toc-text">【2】PHP</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%89%B9%E7%82%B9"><span class="toc-number">2.1.</span> <span class="toc-text">基本特点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E8%AF%AD%E6%B3%95"><span class="toc-number">2.2.</span> <span class="toc-text">基础语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8E-HTML-%E7%BB%93%E5%90%88"><span class="toc-number">2.3.</span> <span class="toc-text">与 HTML 结合</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93%EF%BC%88MySQL%EF%BC%89"><span class="toc-number">2.4.</span> <span class="toc-text">连接数据库（MySQL）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A8%E5%8D%95%E5%A4%84%E7%90%86%EF%BC%88-GET%E3%80%81-POST%EF%BC%89"><span class="toc-number">2.5.</span> <span class="toc-text">*表单处理（$_GET、$_POST）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-GET%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE"><span class="toc-number">2.5.1.</span> <span class="toc-text">使用 $_GET接收数据</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%881%EF%BC%89HTML-%E8%A1%A8%E5%8D%95%EF%BC%88GET-%E6%96%B9%E6%B3%95%EF%BC%89"><span class="toc-number">2.5.1.1.</span> <span class="toc-text">（1）HTML 表单（GET 方法）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%882%EF%BC%89PHP-%E5%A4%84%E7%90%86-GET-%E6%95%B0%E6%8D%AE"><span class="toc-number">2.5.1.2.</span> <span class="toc-text">（2）PHP 处理 GET 数据</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-POST%E6%8E%A5%E6%94%B6%E6%95%B0%E6%8D%AE"><span class="toc-number">2.5.2.</span> <span class="toc-text">使用 $_POST接收数据</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%881%EF%BC%89HTML-%E8%A1%A8%E5%8D%95%EF%BC%88POST-%E6%96%B9%E6%B3%95%EF%BC%89"><span class="toc-number">2.5.2.1.</span> <span class="toc-text">（1）HTML 表单（POST 方法）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%EF%BC%882%EF%BC%89PHP-%E5%A4%84%E7%90%86-POST-%E6%95%B0%E6%8D%AE"><span class="toc-number">2.5.2.2.</span> <span class="toc-text">（2）PHP 处理 POST 数据</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E3%80%903%E3%80%91SQL"><span class="toc-number">3.</span> <span class="toc-text">【3】SQL</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%9F%A5%E8%AF%A2"><span class="toc-number">3.1.</span> <span class="toc-text">基础查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DISTINCT"><span class="toc-number">3.1.1.</span> <span class="toc-text">DISTINCT</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E6%9F%A5%E8%AF%A2"><span class="toc-number">3.2.</span> <span class="toc-text">条件查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#WHERE"><span class="toc-number">3.2.1.</span> <span class="toc-text">WHERE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">3.2.2.</span> <span class="toc-text">运算符</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AF%94%E8%BE%83%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">3.2.2.1.</span> <span class="toc-text">比较运算符</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">3.2.2.2.</span> <span class="toc-text">逻辑运算符</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#BETWEEN"><span class="toc-number">3.2.3.</span> <span class="toc-text">BETWEEN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IN"><span class="toc-number">3.2.4.</span> <span class="toc-text">IN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LIKE"><span class="toc-number">3.2.5.</span> <span class="toc-text">LIKE</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F%E5%92%8C%E9%99%90%E5%88%B6"><span class="toc-number">3.3.</span> <span class="toc-text">排序和限制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ORDER-BY"><span class="toc-number">3.3.1.</span> <span class="toc-text">ORDER BY</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LIMIT"><span class="toc-number">3.3.2.</span> <span class="toc-text">LIMIT</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0"><span class="toc-number">3.4.</span> <span class="toc-text">聚合函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#HAVING"><span class="toc-number">3.4.1.</span> <span class="toc-text">HAVING</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2"><span class="toc-number">3.5.</span> <span class="toc-text">多表查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9E%E6%8E%A5%E6%9F%A5%E8%AF%A2"><span class="toc-number">3.5.1.</span> <span class="toc-text">连接查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%90%E6%9F%A5%E8%AF%A2"><span class="toc-number">3.5.2.</span> <span class="toc-text">子查询</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%93%8D%E4%BD%9C%E8%AF%AD%E5%8F%A5"><span class="toc-number">3.6.</span> <span class="toc-text">数据操作语句</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#INSERT"><span class="toc-number">3.6.1.</span> <span class="toc-text">INSERT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UPDATE"><span class="toc-number">3.6.2.</span> <span class="toc-text">UPDATE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DELETE"><span class="toc-number">3.6.3.</span> <span class="toc-text">DELETE</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7%E6%9F%A5%E8%AF%A2"><span class="toc-number">3.7.</span> <span class="toc-text">高级查询</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#UNION"><span class="toc-number">3.7.1.</span> <span class="toc-text">UNION</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E3%80%904%E3%80%91%E7%AE%80%E5%8D%95%E5%8A%A8%E6%80%81%E7%BD%91%E7%AB%99%EF%BC%88html-php-sql%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">【4】简单动态网站（html&amp;php&amp;sql）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E7%AB%AF"><span class="toc-number">4.1.</span> <span class="toc-text">前端</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#html-php"><span class="toc-number">4.1.1.</span> <span class="toc-text">html&amp;php</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E7%AB%AF"><span class="toc-number">4.2.</span> <span class="toc-text">后端</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93-php"><span class="toc-number">4.2.1.</span> <span class="toc-text">数据库&amp;php</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E5%90%8E%E7%AB%AF%E4%BA%A4%E4%BA%92"><span class="toc-number">4.3.</span> <span class="toc-text">前后端交互</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B"><span class="toc-number">4.3.1.</span> <span class="toc-text">流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E6%96%B9%E5%BC%8F"><span class="toc-number">4.3.2.</span> <span class="toc-text">主要方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%A1%A8%E5%8D%95%E6%8F%90%E4%BA%A4%EF%BC%88%E5%90%8C%E6%AD%A5%EF%BC%89"><span class="toc-number">4.3.2.1.</span> <span class="toc-text">表单提交（同步）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#AJAX%E8%AF%B7%E6%B1%82%EF%BC%88%E5%BC%82%E6%AD%A5%EF%BC%89"><span class="toc-number">4.3.2.2.</span> <span class="toc-text">AJAX请求（异步）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Cookie-Session%E6%9C%BA%E5%88%B6"><span class="toc-number">4.3.2.3.</span> <span class="toc-text">Cookie&#x2F;Session机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#URL%E5%8F%82%E6%95%B0%E4%B8%8E%E9%87%8D%E5%AE%9A%E5%90%91"><span class="toc-number">4.3.2.4.</span> <span class="toc-text">URL参数与重定向</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F%E4%B8%8E%E4%BC%A0%E8%BE%93"><span class="toc-number">4.3.3.</span> <span class="toc-text">数据格式与传输</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%A4%84%E7%90%86"><span class="toc-number">4.3.3.1.</span> <span class="toc-text">文件上传处理</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/22/%E4%B8%8B%E6%96%AD%E7%82%B9%E7%9A%84%E6%96%B9%E6%B3%95/" title="下断点的方法">下断点的方法</a><time datetime="2025-11-22T03:52:26.000Z" title="Created 2025-11-22 11:52:26">2025-11-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/22/OD%E8%84%B1%E5%A3%B3/" title="OD脱壳">OD脱壳</a><time datetime="2025-11-22T03:45:01.000Z" title="Created 2025-11-22 11:45:01">2025-11-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/21/%E4%BD%9C%E5%93%81%E9%9B%86/" title="作品集">作品集</a><time datetime="2025-11-21T11:46:02.000Z" title="Created 2025-11-21 19:46:02">2025-11-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/10/16/%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A01/" title="信息泄露漏洞学习1">信息泄露漏洞学习1</a><time datetime="2025-10-16T12:30:21.000Z" title="Created 2025-10-16 20:30:21">2025-10-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/10/16/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/" title="信息搜集">信息搜集</a><time datetime="2025-10-16T12:30:18.000Z" title="Created 2025-10-16 20:30:18">2025-10-16</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By cyan5s</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.0.0</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.0</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,549 @@
+<!DOCTYPE html><html lang="ch" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>信息搜集 | cyan5s's blog</title><meta name="author" content="cyan5s"><meta name="copyright" content="cyan5s"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="X1师傅已经讲得很清楚了：信息搜集 | X1ly?S 工具使用FOFA{被动} https:&#x2F;&#x2F;fofa.info&#x2F;  常用字段   字段名 说明 示例 用途    ip 根据 IP 地址搜索 ip&#x3D;&quot;123.123.123.123&quot; 查找指定 IP 的资产   domain 根据域名搜索 domain&#x3D;&quot;fofa.info&quot; 查找指定根域名的所有子域名资产">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信息搜集">
+<meta property="og:url" content="http://cyan5s.github.io/2025/10/16/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/index.html">
+<meta property="og:site_name" content="cyan5s&#39;s blog">
+<meta property="og:description" content="X1师傅已经讲得很清楚了：信息搜集 | X1ly?S 工具使用FOFA{被动} https:&#x2F;&#x2F;fofa.info&#x2F;  常用字段   字段名 说明 示例 用途    ip 根据 IP 地址搜索 ip&#x3D;&quot;123.123.123.123&quot; 查找指定 IP 的资产   domain 根据域名搜索 domain&#x3D;&quot;fofa.info&quot; 查找指定根域名的所有子域名资产">
+<meta property="og:locale">
+<meta property="og:image" content="http://cyan5s.github.io/img/cyan5s.jpg">
+<meta property="article:published_time" content="2025-10-16T12:30:18.000Z">
+<meta property="article:modified_time" content="2025-11-22T05:10:19.884Z">
+<meta property="article:author" content="cyan5s">
+<meta property="article:tag" content="信息搜集">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://cyan5s.github.io/img/cyan5s.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "信息搜集",
+  "url": "http://cyan5s.github.io/2025/10/16/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/",
+  "image": "http://cyan5s.github.io/img/cyan5s.jpg",
+  "datePublished": "2025-10-16T12:30:18.000Z",
+  "dateModified": "2025-11-22T05:10:19.884Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "cyan5s",
+      "url": "http://cyan5s.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://cyan5s.github.io/2025/10/16/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '信息搜集',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.0.0"></head><body><div id="web_bg" style="background-image: url(/img/background.jpg);"></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: transparent;"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">cyan5s's blog</span></a><a class="nav-page-title" href="/"><span class="site-name">信息搜集</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">信息搜集</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-10-16T12:30:18.000Z" title="Created 2025-10-16 20:30:18">2025-10-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-11-22T05:10:19.884Z" title="Updated 2025-11-22 13:10:19">2025-11-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/WEB/">WEB</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>X1师傅已经讲得很清楚了：<a target="_blank" rel="noopener" href="https://x1lys.github.io/2024/05/03/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/">信息搜集 | X1ly?S</a></p>
+<h3 id="工具使用"><a href="#工具使用" class="headerlink" title="工具使用"></a>工具使用</h3><h4 id="FOFA-被动"><a href="#FOFA-被动" class="headerlink" title="FOFA{被动}"></a>FOFA{被动}</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://fofa.info/">https://fofa.info/</a></li>
+</ul>
+<h5 id="常用字段"><a href="#常用字段" class="headerlink" title="常用字段"></a>常用字段</h5><table>
+<thead>
+<tr>
+<th align="left">字段名</th>
+<th align="left">说明</th>
+<th align="left">示例</th>
+<th align="left">用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong><code>ip</code></strong></td>
+<td align="left">根据 IP 地址搜索</td>
+<td align="left"><code>ip=&quot;123.123.123.123&quot;</code></td>
+<td align="left">查找指定 IP 的资产</td>
+</tr>
+<tr>
+<td align="left"><strong><code>domain</code></strong></td>
+<td align="left">根据域名搜索</td>
+<td align="left"><code>domain=&quot;fofa.info&quot;</code></td>
+<td align="left">查找指定根域名的所有子域名资产</td>
+</tr>
+<tr>
+<td align="left"><strong><code>host</code></strong></td>
+<td align="left">搜索包含该字符串的域名或 URL</td>
+<td align="left"><code>host=&quot;.gov.cn&quot;</code></td>
+<td align="left">搜索所有包含 <code>.gov.cn</code>的域名</td>
+</tr>
+<tr>
+<td align="left"><strong><code>title</code></strong></td>
+<td align="left">根据网页标题搜索</td>
+<td align="left"><code>title=&quot;后台管理&quot;</code></td>
+<td align="left">搜索标题为“后台管理”的页面</td>
+</tr>
+<tr>
+<td align="left"><strong><code>header</code></strong></td>
+<td align="left">根据 HTTP 响应头搜索</td>
+<td align="left"><code>header=&quot;thinkphp&quot;</code></td>
+<td align="left">搜索响应头中包含 “thinkphp” 的服务</td>
+</tr>
+<tr>
+<td align="left"><strong><code>server</code></strong></td>
+<td align="left">根据服务器信息搜索</td>
+<td align="left"><code>server==&quot;nginx&quot;</code></td>
+<td align="left">搜索使用 nginx 作为服务器的资产</td>
+</tr>
+<tr>
+<td align="left"><strong><code>cert</code></strong></td>
+<td align="left">根据证书内容搜索</td>
+<td align="left"><code>cert=&quot;google.com&quot;</code></td>
+<td align="left">搜索 SSL 证书中包含 “google.com” 的资产</td>
+</tr>
+<tr>
+<td align="left"><strong><code>body</code></strong></td>
+<td align="left">根据网页正文内容搜索</td>
+<td align="left"><code>body=&quot;忘记密码&quot;</code></td>
+<td align="left">搜索正文中包含“忘记密码”的页面</td>
+</tr>
+<tr>
+<td align="left"><strong><code>port</code></strong></td>
+<td align="left">根据端口号搜索</td>
+<td align="left"><code>port=&quot;3306&quot;</code></td>
+<td align="left">搜索开放了 3306 端口的资产（MySQL）</td>
+</tr>
+<tr>
+<td align="left"><strong><code>protocol</code></strong></td>
+<td align="left">根据协议搜索</td>
+<td align="left"><code>protocol=&quot;ftp&quot;</code></td>
+<td align="left">搜索 FTP 服务</td>
+</tr>
+<tr>
+<td align="left"><strong><code>country</code></strong></td>
+<td align="left">根据国家代码搜索</td>
+<td align="left"><code>country=&quot;CN&quot;</code></td>
+<td align="left">搜索位于中国的资产</td>
+</tr>
+<tr>
+<td align="left"><strong><code>region</code></strong></td>
+<td align="left">根据地区（省）搜索</td>
+<td align="left"><code>region=&quot;Zhejiang&quot;</code></td>
+<td align="left">搜索位于浙江的资产</td>
+</tr>
+<tr>
+<td align="left"><strong><code>city</code></strong></td>
+<td align="left">根据城市搜索</td>
+<td align="left"><code>city=&quot;Hangzhou&quot;</code></td>
+<td align="left">搜索位于杭州的资产</td>
+</tr>
+<tr>
+<td align="left"><strong><code>app</code></strong></td>
+<td align="left">根据识别出的应用搜索</td>
+<td align="left"><code>app=&quot;Microsoft-Exchange&quot;</code></td>
+<td align="left">搜索 Microsoft Exchange 服务器</td>
+</tr>
+<tr>
+<td align="left"><strong><code>banner</code></strong></td>
+<td align="left">根据服务 banner 信息搜索</td>
+<td align="left"><code>banner=&quot;ssh-2.0&quot;</code></td>
+<td align="left">搜索 SSH 服务</td>
+</tr>
+<tr>
+<td align="left"><strong><code>os</code></strong></td>
+<td align="left">根据操作系统搜索</td>
+<td align="left"><code>os=windows</code></td>
+<td align="left">搜索 Windows 系统的资产</td>
+</tr>
+<tr>
+<td align="left"><strong><code>icp</code></strong></td>
+<td align="left">根据 ICP 备案号搜索</td>
+<td align="left"><code>icp=&quot;京ICP备123456号&quot;</code></td>
+<td align="left">搜索指定备案号的资产</td>
+</tr>
+<tr>
+<td align="left"><strong><code>jsmith</code></strong></td>
+<td align="left">根据 JS 文件中的内容搜索</td>
+<td align="left"><code>jsmith=&quot;apiKey&quot;</code></td>
+<td align="left">搜索 JS 文件中泄露的 API 密钥</td>
+</tr>
+<tr>
+<td align="left"><strong><code>fid</code></strong></td>
+<td align="left">根据 Fid 搜索</td>
+<td align="left"><code>fid=&quot;k/aeVZYqZmCzy4+qixGnqw==&quot;</code></td>
+<td align="left">搜索特定 Fid（文件唯一标识）的资产</td>
+</tr>
+</tbody></table>
+<h5 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h5><table>
+<thead>
+<tr>
+<th align="left">运算符</th>
+<th align="left">说明</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong><code>=</code></strong></td>
+<td align="left"><strong>等于</strong>（精确匹配，区分大小写）</td>
+<td align="left"><code>header=&quot;server: nginx&quot;</code></td>
+</tr>
+<tr>
+<td align="left"><strong><code>==</code></strong></td>
+<td align="left"><strong>完全等于</strong>（精确匹配，完全一致）</td>
+<td align="left"><code>server==&quot;nginx/1.18.0&quot;</code></td>
+</tr>
+<tr>
+<td align="left"><strong><code>!=</code></strong></td>
+<td align="left"><strong>不等于</strong></td>
+<td align="left"><code>os!=windows</code></td>
+</tr>
+<tr>
+<td align="left"><strong><code>&amp;&amp;</code></strong></td>
+<td align="left"><strong>与</strong>（同时满足）</td>
+<td align="left"><code>title=&quot;login&quot; &amp;&amp; body=&quot;admin&quot;</code></td>
+</tr>
+<tr>
+<td align="left"><strong><code>=</code></strong> &#x2F; <strong><code>~</code></strong></td>
+<td align="left"><strong>正则匹配</strong>（高级功能，通常需要会员）</td>
+<td align="left"><code>title~&quot;.*登录.*&quot;</code></td>
+</tr>
+<tr>
+<td align="left"><strong><code>=</code></strong> &#x2F; <strong><code>\*</code></strong></td>
+<td align="left"><strong>模糊匹配</strong>（包含）</td>
+<td align="left"><code>title*&quot;admin&quot;</code>(等同于 <code>title=&quot;admin&quot;</code>)</td>
+</tr>
+</tbody></table>
+<h5 id="搜索实例"><a href="#搜索实例" class="headerlink" title="搜索实例"></a>搜索实例</h5><blockquote>
+<h4 id="1-基础搜索"><a href="#1-基础搜索" class="headerlink" title="1. 基础搜索"></a>1. 基础搜索</h4><ul>
+<li>查找特定公司资产：<code>domain=&quot;douyin.com&quot;</code></li>
+<li>查找标题中包含“登录”的页面：<code>title=&quot;登录&quot;</code></li>
+<li>查找某个 IP 段（CIDR格式）：<code>ip=&quot;123.123.123.0/24&quot;</code></li>
+</ul>
+<h4 id="2-组合搜索（常用技巧）"><a href="#2-组合搜索（常用技巧）" class="headerlink" title="2. 组合搜索（常用技巧）"></a>2. 组合搜索（常用技巧）</h4><ul>
+<li><strong>查找日本的 WordPress 站点</strong>：<code>app=&quot;WordPress&quot; &amp;&amp; country=&quot;JP&quot;</code></li>
+<li><strong>查找中国境内开放 3389 端口的 Windows 服务器</strong>：<code>port=&quot;3389&quot; &amp;&amp; country=&quot;CN&quot; &amp;&amp; os=windows</code></li>
+<li><strong>查找某后台登录页面，但排除 404 页面</strong>：<code>title=&quot;后台管理&quot; &amp;&amp; body!=&quot;404&quot;</code></li>
+<li><strong>查找 ThinkPHP 框架且存在 phpinfo 信息的站点</strong>：<code>app=&quot;ThinkPHP&quot; &amp;&amp; body=&quot;phpinfo()&quot;</code></li>
+</ul>
+<h4 id="3-漏洞影响范围评估"><a href="#3-漏洞影响范围评估" class="headerlink" title="3. 漏洞影响范围评估"></a>3. 漏洞影响范围评估</h4><ul>
+<li><strong>查找某特定组件或版本（例如 Apache Log4j 漏洞）</strong>：<code>app=&quot;Apache-Log4j&quot; &amp;&amp; after=&quot;2021-12-01&quot;</code>(查找某时间后更新的资产，可能包含漏洞版本)<code>header=&quot;x-apache-log4j&quot;</code>(查找特定的响应头)</li>
+<li><strong>查找某特定漏洞的利用特征</strong>：<code>body=&quot;weblogic&quot; &amp;&amp; title=&quot;500&quot; &amp;&amp; body=&quot;java.lang.NullPointerException&quot;</code></li>
+</ul>
+<h4 id="4-资产发现与梳理"><a href="#4-资产发现与梳理" class="headerlink" title="4. 资产发现与梳理"></a>4. 资产发现与梳理</h4><ul>
+<li><strong>查找某公司的所有子域名</strong>：<code>domain=&quot;xxx.com&quot;</code></li>
+<li><strong>查找所有使用了某证书的资产（常用于发现子域名或兄弟公司）</strong>：<code>cert=&quot;xxx.com&quot;</code></li>
+</ul>
+</blockquote>
+<h5 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h5><blockquote>
+<ol>
+<li><strong>转义特殊字符</strong>：如果搜索的值中包含空格、引号等特殊字符，需要用 &#96;&#96;&#96;&#96; 进行转义。例如：<code>title=&quot;\&quot;系统登录\&quot;&quot;</code></li>
+<li><strong>使用括号</strong>：复杂的逻辑组合建议使用括号 <code>()</code>来明确优先级。例如：<code>(title=&quot;admin&quot; || title=&quot;登录&quot;) &amp;&amp; country=&quot;US&quot;</code></li>
+<li><strong><code>is_honeypot</code></strong>：判断是否是蜜罐（非绝对准确，但很有参考价值）。例如，在搜索时可以考虑排除蜜罐：<code>app=&quot;WordPress&quot; &amp;&amp; is_honeypot=false</code></li>
+<li><strong><code>after</code>&#x2F; <code>before</code></strong>：按时间筛选资产，格式为 <code>YYYY-MM-DD</code>。例如：<code>app=&quot;Redis&quot; &amp;&amp; after=&quot;2023-01-01&quot;</code>（查找 2023 年后更新的 Redis 服务）</li>
+<li><strong>统计语法</strong>：使用 <code>fid</code>字段和统计功能可以快速汇总资产。例如，先搜索 <code>domain=&quot;fofa.info&quot;</code>，然后使用右侧的统计功能，可以快速看到这个域名下开放了哪些端口、使用了哪些服务器等。</li>
+<li><strong>API 调用</strong>：上述所有语法都可以通过 FOFA 的 API 进行调用，实现自动化的资产监控和漏洞扫描。</li>
+</ol>
+</blockquote>
+<h4 id="OneForAll-主动"><a href="#OneForAll-主动" class="headerlink" title="OneForAll{主动}"></a>OneForAll{主动}</h4><p>需要3.6 及以上版本的python</p>
+<h5 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h5><p><em>许多模块（如搜索引擎爬取、证书透明度查询）需要配置 API 密钥才能达到最佳效果，否则很容易被限流。</em></p>
+<p>在config&#x2F;setting.py下，去相应的网站申请 API Key，然后填入。</p>
+<blockquote>
+<ul>
+<li><strong>SSL 证书查询</strong>：需要配置 <code>censys_api_id</code>和 <code>censys_api_secret</code>。</li>
+<li><strong>搜索引擎爬取</strong>：推荐配置 <code>google_api_key</code>和 <code>google_cx_id</code>(可自定义搜索引擎)，以及 <code>shodan_api_key</code>, <code>fofa_api_email</code>, <code>fofa_api_key</code>, <code>zoomeye_api_key</code>等。</li>
+<li><strong>DNS 解析服务器</strong>：可以配置 <code>resolver_nameservers</code>为更快的公共 DNS（如 <code>114.114.114.114</code>, <code>8.8.8.8</code>）。</li>
+</ul>
+</blockquote>
+<h5 id="常用参数"><a href="#常用参数" class="headerlink" title="常用参数"></a>常用参数</h5><blockquote>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">全称</th>
+<th align="left">说明</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>--target</code></td>
+<td align="left"></td>
+<td align="left"><strong>必选</strong>。指定要收集的目标域名，可以是单个或多个（用逗号分隔）。</td>
+<td align="left"><code>--target sina.com.cn</code></td>
+</tr>
+<tr>
+<td align="left"><code>--targets</code></td>
+<td align="left"></td>
+<td align="left">从文件中读取目标域名列表，一行一个。</td>
+<td align="left"><code>--targets ./domains.txt</code></td>
+</tr>
+<tr>
+<td align="left"><code>--brute</code></td>
+<td align="left"></td>
+<td align="left"><strong>启用子域名爆破</strong>。默认不开启，因为速度较慢。</td>
+<td align="left"><code>--brute True</code></td>
+</tr>
+<tr>
+<td align="left"><code>--dns</code></td>
+<td align="left"><code>--dns True</code></td>
+<td align="left">启用 DNS 解析验证子域名是否存活，并解析出 IP。<strong>默认开启</strong>，通常不需要手动设置。</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>--port</code></td>
+<td align="left"><code>--port True</code></td>
+<td align="left">对解析出的 IP 进行<strong>常用端口扫描</strong>。默认不开启。</td>
+<td align="left"><code>--port True</code></td>
+</tr>
+<tr>
+<td align="left"><code>--req</code></td>
+<td align="left"><code>--req True</code></td>
+<td align="left">启用 HTTP 请求，获取标题、状态码、Banner 等信息。<strong>默认开启</strong>。</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"><code>--takeover</code></td>
+<td align="left"><code>--takeover True</code></td>
+<td align="left">检查子域名劫持（CNAME 记录指向已失效的云服务等）。</td>
+<td align="left"><code>--takeover True</code></td>
+</tr>
+<tr>
+<td align="left"><code>--fmt</code></td>
+<td align="left"><code>--format</code></td>
+<td align="left"><strong>指定结果输出格式</strong>，支持 <code>txt</code>, <code>csv</code>, <code>json</code>, <code>yaml</code>, <code>html</code>, <code>xls</code>, <code>xlsx</code>, <code>dbf</code>, <code>latex</code>。</td>
+<td align="left"><code>--fmt json</code></td>
+</tr>
+<tr>
+<td align="left"><code>--path</code></td>
+<td align="left"></td>
+<td align="left">指定结果保存的目录，默认为 <code>./results/</code>。</td>
+<td align="left"><code>--path ./my_results/</code></td>
+</tr>
+<tr>
+<td align="left"><code>--alive</code></td>
+<td align="left"><code>--alive True</code></td>
+<td align="left">在 TXT 文本格式输出中，仅输出存活的子域名。</td>
+<td align="left"><code>--alive True</code></td>
+</tr>
+<tr>
+<td align="left"><code>--help</code></td>
+<td align="left"></td>
+<td align="left">查看完整的帮助信息。</td>
+<td align="left"><code>python3 oneforall.py --help</code></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h5 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h5><blockquote>
+<h4 id="1-快速收集"><a href="#1-快速收集" class="headerlink" title="1. 快速收集"></a>1. 快速收集</h4><p>标准综合收集（最常用），启用所有接口查询和验证，并进行简单的 HTTP 请求获取 Web 信息。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 oneforall.py <span class="literal">--target</span> example.com run</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-深度收集"><a href="#2-深度收集" class="headerlink" title="2. 深度收集"></a>2. 深度收集</h4><p>综合收集 + 子域名爆破。<strong>注意：这会非常耗时</strong>。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 oneforall.py <span class="literal">--target</span> example.com <span class="literal">--brute</span> True run</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-批量扫描"><a href="#3-批量扫描" class="headerlink" title="3. 批量扫描"></a>3. 批量扫描</h4><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首先创建一个目标文件</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;domain1.com&quot;</span> &gt; targets.txt</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;domain2.cn&quot;</span> &gt;&gt; targets.txt</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;company.org&quot;</span> &gt;&gt; targets.txt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 然后使用 --targets 参数</span></span><br><span class="line">python3 oneforall.py <span class="literal">--targets</span> ./targets.txt run</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-深度扫描-端口扫描"><a href="#4-深度扫描-端口扫描" class="headerlink" title="4. 深度扫描 + 端口扫描"></a>4. 深度扫描 + 端口扫描</h4><p>在综合收集和爆破的基础上，同时对发现的 IP 进行端口扫描。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 oneforall.py <span class="literal">--target</span> example.com <span class="literal">--brute</span> True <span class="literal">--port</span> True run</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-指定输出格式"><a href="#5-指定输出格式" class="headerlink" title="5. 指定输出格式"></a>5. 指定输出格式</h4><p>将结果输出为 JSON 和 Excel 格式，便于后续自动化处理。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python3 oneforall.py <span class="literal">--target</span> example.com <span class="literal">--fmt</span> json <span class="literal">--fmt</span> xlsx run</span><br><span class="line">python3 oneforall.py <span class="literal">--target</span> example.com <span class="literal">--port</span> True <span class="literal">--fmt</span> xlsx run//资产梳理</span><br></pre></td></tr></table></figure></blockquote>
+<p>生成的<code>subdomains.txt</code>只包含解析成功的子域名，适合直接用于后续的渗透测试</p>
+<h4 id="Eeyes"><a href="#Eeyes" class="headerlink" title="Eeyes"></a>Eeyes</h4><p>扫描c段</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Eeyes.exe <span class="literal">-l</span> subdomain.txt</span><br></pre></td></tr></table></figure>
+
+<h4 id="fscan"><a href="#fscan" class="headerlink" title="fscan"></a>fscan</h4><p>对c段存活的主机进行探测和综和扫描</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fscan.exe <span class="literal">-hf</span> c.txt <span class="literal">-o</span> result.txt</span><br></pre></td></tr></table></figure>
+
+<h4 id="fscanOutput"><a href="#fscanOutput" class="headerlink" title="fscanOutput"></a>fscanOutput</h4><p>处理fsacn输出结果</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python  fscanoutput.py result.txt</span><br></pre></td></tr></table></figure>
+
+<h4 id="Ehole"><a href="#Ehole" class="headerlink" title="Ehole"></a>Ehole</h4><p>测试url资产的活性</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ehole.exe <span class="literal">-l</span> web.txt <span class="literal">-json</span> export.json</span><br></pre></td></tr></table></figure>
+
+<h4 id="Sublime-Text"><a href="#Sublime-Text" class="headerlink" title="Sublime Text"></a>Sublime Text</h4><p>正则提取url资产</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http://[^\<span class="string">&quot;]*</span></span><br><span class="line"><span class="string">https://[^\&quot;]*</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="nuclei"><a href="#nuclei" class="headerlink" title="nuclei"></a>nuclei</h4><p>自动化扫描</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nuclei.exe -list test.txt -o output.txt</span><br></pre></td></tr></table></figure>
+
+<h4 id="7kbscan-WebPathBrute"><a href="#7kbscan-WebPathBrute" class="headerlink" title="7kbscan-WebPathBrute"></a>7kbscan-WebPathBrute</h4><p>Web路径暴力探测工具</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/7kbstorm/7kbscan-WebPathBrute">https://github.com/7kbstorm/7kbscan-WebPathBrute</a></p>
+<h4 id="dirsearch"><a href="#dirsearch" class="headerlink" title="dirsearch"></a>dirsearch</h4><p>Web 路径扫描（kali）</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dirsearch <span class="literal">-u</span> http://example.com</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">说明</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>-e</code></td>
+<td align="left">指定文件扩展名（如 <code>php, html, txt</code>）</td>
+<td align="left"><code>-e php,html</code></td>
+</tr>
+<tr>
+<td align="left"><code>-w</code></td>
+<td align="left">使用自定义字典文件</td>
+<td align="left"><code>-w /path/to/wordlist.txt</code></td>
+</tr>
+<tr>
+<td align="left"><code>-t</code></td>
+<td align="left">设置线程数（默认 20，过高可能被封）</td>
+<td align="left"><code>-t 30</code></td>
+</tr>
+<tr>
+<td align="left"><code>-r</code></td>
+<td align="left">递归扫描（发现目录后继续深入）</td>
+<td align="left"><code>-r</code></td>
+</tr>
+<tr>
+<td align="left"><code>--random-agent</code></td>
+<td align="left">使用随机 User-Agent 避免被 WAF 拦截</td>
+<td align="left"><code>--random-agent</code></td>
+</tr>
+<tr>
+<td align="left"><code>--proxy</code></td>
+<td align="left">使用代理（如 Burp Suite 或 Tor）</td>
+<td align="left"><code>--proxy http://127.0.0.1:8080</code></td>
+</tr>
+<tr>
+<td align="left"><code>--timeout</code></td>
+<td align="left">设置超时时间（默认 15 秒）</td>
+<td align="left"><code>--timeout 10</code></td>
+</tr>
+<tr>
+<td align="left"><code>-f</code></td>
+<td align="left">强制显示所有结果（即使返回 403&#x2F;404）</td>
+<td align="left"><code>-f</code></td>
+</tr>
+<tr>
+<td align="left"><code>--full-url</code></td>
+<td align="left">显示完整 URL（便于复制）</td>
+<td align="left"><code>--full-url</code></td>
+</tr>
+<tr>
+<td align="left"><code>-o</code></td>
+<td align="left">保存结果到文件</td>
+<td align="left"><code>-o report.txt</code></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h4 id="FUFF"><a href="#FUFF" class="headerlink" title="FUFF"></a>FUFF</h4><p>Fast web fuzzer written in Go</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ffuf -w wordlist.txt -u http://example.com/FUZZ</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://cyan5s.github.io">cyan5s</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://cyan5s.github.io/2025/10/16/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/">http://cyan5s.github.io/2025/10/16/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/">信息搜集</a></div><div class="post-share"><div class="social-share" data-image="/img/cyan5s.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/10/16/%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A01/" title="信息泄露漏洞学习1"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">信息泄露漏洞学习1</div></div><div class="info-2"><div class="info-item-1">因设计、配置或代码缺陷，无意中向用户（尤其是未授权用户）暴露了敏感信息 原理一、服务器与中间件泄露主要由错误的配置或默认行为引起  默认错误页面与调试信息  场景： 应用程序在生产环境中启用了调试模式。当出现错误（如数据库连接失败、代码语法错误）时，服务器不是向用户返回一个友好的错误页面，而是返回包含*堆栈跟踪（Stack Trace） 的详细错误信息。* 泄露内容： 绝对服务器路径、数据库连接字符串、SQL查询语句片段、代码片段、服务器使用的框架和库的版本。 案例： 访问 https://example.com/user.php?id=abc（传入一个非数字参数），页面返回 Warning: mysql_fetch_array() expects parameter 1 to be resource, boolean given in /var/www/html/app/database.php on line 55。这直接泄露了路径和数据库类型。   查找方法：  触发错误： 在URL参数、表单字段、HTTP头（如 Cookie, User-Agent）中提交异常数据：特殊字...</div></div></div></a><a class="pagination-related" href="/2025/10/10/unity%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B01/" title="unity自学笔记1"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">unity自学笔记1</div></div><div class="info-2"><div class="info-item-1">前期准备下载&amp;安装先下载unity hub，方便后续集中管理和安装多个 Unity 版本 下载链接：Start Your Creative Projects and Download the Unity Hub | Unity 以windows为例，上面点不了就点下面的  安装完成后打开，点击左边一栏的 Installs ，再点击右上角的 Installs Editor ，选择你想要的unity版本（可以先问一下AI你想制作的游戏使用哪个版本更好，当然，若是初学练习，能用就行） 我下载的是Unity 2023.3 LTS 基础了解对于一个零基础的小白，熟悉一下基本配置还是必要的，但稍微了解一点就够了，毕竟死记硬背半天不如自己操作一遍 首先，我们看到界面分为了六大块： 12345678910111213141516171819┌─────────────────────────────────────────────────────┐│  菜单栏: File Edit Assets GameObject Component ...  │├─────────────┬────...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/cyan5s.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">cyan5s</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div><a id="card-info-btn" href="https://cyan5s.github.io/"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">工具使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#FOFA-%E8%A2%AB%E5%8A%A8"><span class="toc-number">1.1.</span> <span class="toc-text">FOFA{被动}</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%AD%97%E6%AE%B5"><span class="toc-number">1.1.1.</span> <span class="toc-text">常用字段</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">1.1.2.</span> <span class="toc-text">逻辑运算符</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2%E5%AE%9E%E4%BE%8B"><span class="toc-number">1.1.3.</span> <span class="toc-text">搜索实例</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80%E6%90%9C%E7%B4%A2"><span class="toc-number">1.2.</span> <span class="toc-text">1. 基础搜索</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E7%BB%84%E5%90%88%E6%90%9C%E7%B4%A2%EF%BC%88%E5%B8%B8%E7%94%A8%E6%8A%80%E5%B7%A7%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">2. 组合搜索（常用技巧）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E6%BC%8F%E6%B4%9E%E5%BD%B1%E5%93%8D%E8%8C%83%E5%9B%B4%E8%AF%84%E4%BC%B0"><span class="toc-number">1.4.</span> <span class="toc-text">3. 漏洞影响范围评估</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E8%B5%84%E4%BA%A7%E5%8F%91%E7%8E%B0%E4%B8%8E%E6%A2%B3%E7%90%86"><span class="toc-number">1.5.</span> <span class="toc-text">4. 资产发现与梳理</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">1.5.1.</span> <span class="toc-text">注意事项</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#OneForAll-%E4%B8%BB%E5%8A%A8"><span class="toc-number">1.6.</span> <span class="toc-text">OneForAll{主动}</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-number">1.6.1.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0"><span class="toc-number">1.6.2.</span> <span class="toc-text">常用参数</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.6.3.</span> <span class="toc-text">使用示例</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-%E5%BF%AB%E9%80%9F%E6%94%B6%E9%9B%86"><span class="toc-number">1.7.</span> <span class="toc-text">1. 快速收集</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E6%B7%B1%E5%BA%A6%E6%94%B6%E9%9B%86"><span class="toc-number">1.8.</span> <span class="toc-text">2. 深度收集</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-%E6%89%B9%E9%87%8F%E6%89%AB%E6%8F%8F"><span class="toc-number">1.9.</span> <span class="toc-text">3. 批量扫描</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-%E6%B7%B1%E5%BA%A6%E6%89%AB%E6%8F%8F-%E7%AB%AF%E5%8F%A3%E6%89%AB%E6%8F%8F"><span class="toc-number">1.10.</span> <span class="toc-text">4. 深度扫描 + 端口扫描</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-%E6%8C%87%E5%AE%9A%E8%BE%93%E5%87%BA%E6%A0%BC%E5%BC%8F"><span class="toc-number">1.11.</span> <span class="toc-text">5. 指定输出格式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Eeyes"><span class="toc-number">1.12.</span> <span class="toc-text">Eeyes</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fscan"><span class="toc-number">1.13.</span> <span class="toc-text">fscan</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fscanOutput"><span class="toc-number">1.14.</span> <span class="toc-text">fscanOutput</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Ehole"><span class="toc-number">1.15.</span> <span class="toc-text">Ehole</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Sublime-Text"><span class="toc-number">1.16.</span> <span class="toc-text">Sublime Text</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nuclei"><span class="toc-number">1.17.</span> <span class="toc-text">nuclei</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7kbscan-WebPathBrute"><span class="toc-number">1.18.</span> <span class="toc-text">7kbscan-WebPathBrute</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dirsearch"><span class="toc-number">1.19.</span> <span class="toc-text">dirsearch</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#FUFF"><span class="toc-number">1.20.</span> <span class="toc-text">FUFF</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/22/%E4%B8%8B%E6%96%AD%E7%82%B9%E7%9A%84%E6%96%B9%E6%B3%95/" title="下断点的方法">下断点的方法</a><time datetime="2025-11-22T03:52:26.000Z" title="Created 2025-11-22 11:52:26">2025-11-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/22/OD%E8%84%B1%E5%A3%B3/" title="OD脱壳">OD脱壳</a><time datetime="2025-11-22T03:45:01.000Z" title="Created 2025-11-22 11:45:01">2025-11-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/21/%E4%BD%9C%E5%93%81%E9%9B%86/" title="作品集">作品集</a><time datetime="2025-11-21T11:46:02.000Z" title="Created 2025-11-21 19:46:02">2025-11-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/10/16/%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A01/" title="信息泄露漏洞学习1">信息泄露漏洞学习1</a><time datetime="2025-10-16T12:30:21.000Z" title="Created 2025-10-16 20:30:21">2025-10-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/10/16/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/" title="信息搜集">信息搜集</a><time datetime="2025-10-16T12:30:18.000Z" title="Created 2025-10-16 20:30:18">2025-10-16</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By cyan5s</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.0.0</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.0</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

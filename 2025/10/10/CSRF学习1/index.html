@@ -1,0 +1,187 @@
+<!DOCTYPE html><html lang="ch" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>CSRF学习1 | cyan5s's blog</title><meta name="author" content="cyan5s"><meta name="copyright" content="cyan5s"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="跨站请求伪造 原理让用户浏览器自动发请求给某个网站即为CSRF。若携带cookie，则易造成损失。 必要条件：  用户登陆了某个网站，建立了会话 触发浏览器自动发送请求的动作  攻击手段自解压文件工具：WINRAR 压缩文件时：右键-&gt;添加到压缩文件-&gt;创建自解压格式压缩文件-&gt;高级-&gt;自解压选项-&gt;设置-&gt;写入恶意链接  解压前运行：点击解压时开始运行 解压后">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSRF学习1">
+<meta property="og:url" content="http://cyan5s.github.io/2025/10/10/CSRF%E5%AD%A6%E4%B9%A01/index.html">
+<meta property="og:site_name" content="cyan5s&#39;s blog">
+<meta property="og:description" content="跨站请求伪造 原理让用户浏览器自动发请求给某个网站即为CSRF。若携带cookie，则易造成损失。 必要条件：  用户登陆了某个网站，建立了会话 触发浏览器自动发送请求的动作  攻击手段自解压文件工具：WINRAR 压缩文件时：右键-&gt;添加到压缩文件-&gt;创建自解压格式压缩文件-&gt;高级-&gt;自解压选项-&gt;设置-&gt;写入恶意链接  解压前运行：点击解压时开始运行 解压后">
+<meta property="og:locale">
+<meta property="og:image" content="http://cyan5s.github.io/img/cyan5s.jpg">
+<meta property="article:published_time" content="2025-10-10T08:11:12.000Z">
+<meta property="article:modified_time" content="2025-11-22T04:52:18.899Z">
+<meta property="article:author" content="cyan5s">
+<meta property="article:tag" content="CSRF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://cyan5s.github.io/img/cyan5s.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "CSRF学习1",
+  "url": "http://cyan5s.github.io/2025/10/10/CSRF%E5%AD%A6%E4%B9%A01/",
+  "image": "http://cyan5s.github.io/img/cyan5s.jpg",
+  "datePublished": "2025-10-10T08:11:12.000Z",
+  "dateModified": "2025-11-22T04:52:18.899Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "cyan5s",
+      "url": "http://cyan5s.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://cyan5s.github.io/2025/10/10/CSRF%E5%AD%A6%E4%B9%A01/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'CSRF学习1',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.0.0"></head><body><div id="web_bg" style="background-image: url(/img/background.jpg);"></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: transparent;"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">cyan5s's blog</span></a><a class="nav-page-title" href="/"><span class="site-name">CSRF学习1</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">CSRF学习1</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-10-10T08:11:12.000Z" title="Created 2025-10-10 16:11:12">2025-10-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-11-22T04:52:18.899Z" title="Updated 2025-11-22 12:52:18">2025-11-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/WEB/">WEB</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>跨站请求伪造</p>
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><p>让用户浏览器自动发请求给某个网站即为CSRF。若携带cookie，则易造成损失。</p>
+<p>必要条件：</p>
+<ul>
+<li>用户登陆了某个网站，建立了会话</li>
+<li>触发浏览器自动发送请求的动作</li>
+</ul>
+<h1 id="攻击手段"><a href="#攻击手段" class="headerlink" title="攻击手段"></a>攻击手段</h1><h2 id="自解压文件"><a href="#自解压文件" class="headerlink" title="自解压文件"></a>自解压文件</h2><p>工具：WINRAR</p>
+<p>压缩文件时：<code>右键</code>-&gt;<code>添加到压缩文件</code>-&gt;<code>创建自解压格式压缩文件</code>-&gt;<code>高级</code>-&gt;<code>自解压选项</code>-&gt;<code>设置</code>-&gt;写入恶意链接</p>
+<ul>
+<li>解压前运行：点击解压时开始运行</li>
+<li>解压后运行：解压完成后</li>
+</ul>
+<p>若用户下载了该恶意压缩文件，在解压前&#x2F;后，默认浏览器会自动访问儿恶意链接，恶意链接中可能包含危险操作，若此时用户浏览器保存的该网站的cookie仍有效（没有出现登陆界面），则CSRF执行成功。（若访问网站无需登录，如<a target="_blank" rel="noopener" href="http://www.baidu.com,则csrf也执行成功,只是没有危害)/">www.baidu.com，则CSRF也执行成功，只是没有危害）</a></p>
+<h1 id="如何实现攻击"><a href="#如何实现攻击" class="headerlink" title="如何实现攻击"></a>如何实现攻击</h1><p>自建钓鱼网站或获取他人服务器，注入恶意代码，使用户在访问时触发恶意代码；如果使用自解压文件，则需要写入用户访问可下载该文件的链接。最终获取执行恶意操作的链接，通过钓鱼使受害者点击访问。</p>
+<h2 id="注入恶意代码"><a href="#注入恶意代码" class="headerlink" title="注入恶意代码"></a>注入恶意代码</h2><p><strong>EG.拖库</strong></p>
+<p>普通用户在DISCUZ论坛发布帖子时发现可以发送图片url。发送管理员备份数据库的url，并指定备份文件的保存路径。当管理员访问该帖子时，浏览器会向服务器发送该“图片url”的请求，若此时管理员的后台管理系统Ucenter处于登录状态，则可成功触发备份。攻击者再访问备份文件路径，即可获得备份sql文件。</p>
+<ul>
+<li>如何获取发送管理员备份数据库的url？如何知道管理员在管理后台时要登录Ucenter？<ul>
+<li>许多论坛开源，可通过信息搜集获取源码，在本地搭建即可模拟管理员的操作。[信息搜集]</li>
+<li>查看网站信息的工具：<strong>Wapplayzer</strong> [插件]</li>
+</ul>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1wuDfYzEoj?spm_id_from=333.788.player.switch&vd_source=4f959801e81b357f6ba19683499bb12f&p=4">https://www.bilibili.com/video/BV1wuDfYzEoj?spm_id_from=333.788.player.switch&amp;vd_source=4f959801e81b357f6ba19683499bb12f&amp;p=4</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://cyan5s.github.io">cyan5s</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://cyan5s.github.io/2025/10/10/CSRF%E5%AD%A6%E4%B9%A01/">http://cyan5s.github.io/2025/10/10/CSRF%E5%AD%A6%E4%B9%A01/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/CSRF/">CSRF</a></div><div class="post-share"><div class="social-share" data-image="/img/cyan5s.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/10/10/SSRF%E5%AD%A6%E4%B9%A01/" title="SSRF学习1"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">SSRF学习1</div></div><div class="info-2"><div class="info-item-1">利用A网站的可控功能来获取B网站的信息，主机无法访问B，但A可以【eg.B是A的内网】 形成原因大都是由于服务器端提供了从其他服务器应用获取数据(图片\html页面\…)的功能，且没有对目标地址做过滤与限制。如从指定的URL地址获取网页文本内容，加载指定地址的图片，文档等。 【与文件包含类似】，但文件包含是将远程资源解析成主要为PHP代码  NAT网络地址转换：通过将一个外部IP地址和端口映射到更大的内部IP地址集来转换IP地址。外网访问内网时，防火墙做转发。  NAT端口映射    静态NAT地址转换      出去一个身份，回来一个身份（静态绑定）  伪协议file:&#x2F;&#x2F;在某网站下访问（get&#x2F;post&#x2F;…） 1file:///etc/passwd  若为Linux用户，有返回值则可能存在SSRF 1file:///etc/host  若返回中含有 1234......172.250.250.2 ......172.251.251.2 ............  则说明当前服务器含有两张网卡，分别处于172.250.250.0网段和17...</div></div></div></a><a class="pagination-related" href="/2025/09/29/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E7%AC%94%E8%AE%B0/" title="博客搭建笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">博客搭建笔记</div></div><div class="info-2"><div class="info-item-1">博客搭建笔记本地准备环境git&amp;node.js感谢X师傅之前带我下载过它们，但是刚刚又下了一遍git不过好像没什么影响，node.js能用就不重复下载了 Git Node.js — Run JavaScript Everywhere 框架hexo安装E:\cyanSs目录下，右键打开get bash here 1npm install -g hexo-cli  此时本地已经有了hexo的环境 初始化我直接输入hexo init，一直错误（ping github.com成功，说明不是网络问题） 但是以下命令一次性成功，还得是你deepseek~ 1234# 使用npx直接初始化，避免git连接问题npx hexo init myBlogcd myBlognpm install  此时，已经可以在本地预览了 以下执行的命令均在bash 1hexo s  访问localhost:4000即可 主题hexo的官方主题库：Themes | Hexo 我选择了butterfly 1clone -b master https://gitee.com/immyw/hexo-theme-b...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/cyan5s.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">cyan5s</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div><a id="card-info-btn" href="https://cyan5s.github.io/"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%94%BB%E5%87%BB%E6%89%8B%E6%AE%B5"><span class="toc-number">2.</span> <span class="toc-text">攻击手段</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E8%A7%A3%E5%8E%8B%E6%96%87%E4%BB%B6"><span class="toc-number">2.1.</span> <span class="toc-text">自解压文件</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E6%94%BB%E5%87%BB"><span class="toc-number">3.</span> <span class="toc-text">如何实现攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B3%A8%E5%85%A5%E6%81%B6%E6%84%8F%E4%BB%A3%E7%A0%81"><span class="toc-number">3.1.</span> <span class="toc-text">注入恶意代码</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/22/%E4%B8%8B%E6%96%AD%E7%82%B9%E7%9A%84%E6%96%B9%E6%B3%95/" title="下断点的方法">下断点的方法</a><time datetime="2025-11-22T03:52:26.000Z" title="Created 2025-11-22 11:52:26">2025-11-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/22/OD%E8%84%B1%E5%A3%B3/" title="OD脱壳">OD脱壳</a><time datetime="2025-11-22T03:45:01.000Z" title="Created 2025-11-22 11:45:01">2025-11-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/21/%E4%BD%9C%E5%93%81%E9%9B%86/" title="作品集">作品集</a><time datetime="2025-11-21T11:46:02.000Z" title="Created 2025-11-21 19:46:02">2025-11-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/10/16/%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A01/" title="信息泄露漏洞学习1">信息泄露漏洞学习1</a><time datetime="2025-10-16T12:30:21.000Z" title="Created 2025-10-16 20:30:21">2025-10-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/10/16/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/" title="信息搜集">信息搜集</a><time datetime="2025-10-16T12:30:18.000Z" title="Created 2025-10-16 20:30:18">2025-10-16</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By cyan5s</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.0.0</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.0</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

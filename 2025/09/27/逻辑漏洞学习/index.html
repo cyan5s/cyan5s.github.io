@@ -1,0 +1,339 @@
+<!DOCTYPE html><html lang="ch" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>逻辑漏洞学习 | cyan5s's blog</title><meta name="author" content="cyan5s"><meta name="copyright" content="cyan5s"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="【1-1】逻辑漏洞权限提升&amp;越权访问垂直越权低权限用户通过某种方式（如修改参数、直接访问URL）获取了高权限用户（如管理员）的功能权限。   普通用户通过抓包，将访问&#x2F;user&#x2F;profile的请求改为&#x2F;admin&#x2F;deleteUser，如果后端没有校验角色，则可能成功执行删除用户的操作。 在Cookie或JWT令牌中修改role: user为role: admin。   水平越权相同权限">
+<meta property="og:type" content="article">
+<meta property="og:title" content="逻辑漏洞学习">
+<meta property="og:url" content="http://cyan5s.github.io/2025/09/27/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="cyan5s&#39;s blog">
+<meta property="og:description" content="【1-1】逻辑漏洞权限提升&amp;越权访问垂直越权低权限用户通过某种方式（如修改参数、直接访问URL）获取了高权限用户（如管理员）的功能权限。   普通用户通过抓包，将访问&#x2F;user&#x2F;profile的请求改为&#x2F;admin&#x2F;deleteUser，如果后端没有校验角色，则可能成功执行删除用户的操作。 在Cookie或JWT令牌中修改role: user为role: admin。   水平越权相同权限">
+<meta property="og:locale">
+<meta property="og:image" content="http://cyan5s.github.io/img/cyan5s.jpg">
+<meta property="article:published_time" content="2025-09-27T06:37:47.000Z">
+<meta property="article:modified_time" content="2025-11-22T04:32:42.172Z">
+<meta property="article:author" content="cyan5s">
+<meta property="article:tag" content="逻辑漏洞">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://cyan5s.github.io/img/cyan5s.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "逻辑漏洞学习",
+  "url": "http://cyan5s.github.io/2025/09/27/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/",
+  "image": "http://cyan5s.github.io/img/cyan5s.jpg",
+  "datePublished": "2025-09-27T06:37:47.000Z",
+  "dateModified": "2025-11-22T04:32:42.172Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "cyan5s",
+      "url": "http://cyan5s.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://cyan5s.github.io/2025/09/27/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '逻辑漏洞学习',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.0.0"></head><body><div id="web_bg" style="background-image: url(/img/background.jpg);"></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: transparent;"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">cyan5s's blog</span></a><a class="nav-page-title" href="/"><span class="site-name">逻辑漏洞学习</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">逻辑漏洞学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-09-27T06:37:47.000Z" title="Created 2025-09-27 14:37:47">2025-09-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-11-22T04:32:42.172Z" title="Updated 2025-11-22 12:32:42">2025-11-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/WEB/">WEB</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="【1-1】逻辑漏洞"><a href="#【1-1】逻辑漏洞" class="headerlink" title="【1-1】逻辑漏洞"></a>【1-1】逻辑漏洞</h1><h2 id="权限提升-越权访问"><a href="#权限提升-越权访问" class="headerlink" title="权限提升&amp;越权访问"></a>权限提升&amp;越权访问</h2><h3 id="垂直越权"><a href="#垂直越权" class="headerlink" title="垂直越权"></a>垂直越权</h3><p>低权限用户通过某种方式（如修改参数、直接访问URL）获取了高权限用户（如管理员）的功能权限。</p>
+<blockquote>
+<ul>
+<li>普通用户通过抓包，将访问<code>/user/profile</code>的请求改为<code>/admin/deleteUser</code>，如果后端没有校验角色，则可能成功执行删除用户的操作。</li>
+<li>在Cookie或JWT令牌中修改<code>role: user</code>为<code>role: admin</code>。</li>
+</ul>
+</blockquote>
+<h3 id="水平越权"><a href="#水平越权" class="headerlink" title="水平越权"></a>水平越权</h3><p>相同权限级别的用户A可以访问或操作用户B的数据。</p>
+<blockquote>
+<ul>
+<li>在查看个人订单时，URL为<code>/order?id=10086</code>，用户A通过修改<code>id</code>参数为<code>10087</code>，成功看到了用户B的订单详情。</li>
+<li>通过修改请求参数（如用户ID、手机号、邮箱）来重置他人密码、查看他人信息等。</li>
+</ul>
+</blockquote>
+<h3 id="不安全的对象直接引用"><a href="#不安全的对象直接引用" class="headerlink" title="不安全的对象直接引用"></a>不安全的对象直接引用</h3><p>一种具体的越权形式，应用程序在内部使用文件名、数据库主键等直接作为标识符，并在没有授权检查的情况下向用户暴露这些标识符。</p>
+<blockquote>
+<ul>
+<li><code>/downloadFile?filename=confidential.pdf</code>，攻击者通过遍历<code>filename</code>参数下载所有敏感文件。</li>
+</ul>
+</blockquote>
+<h2 id="业务流程漏洞"><a href="#业务流程漏洞" class="headerlink" title="业务流程漏洞"></a>业务流程漏洞</h2><h3 id="验证机制绕过"><a href="#验证机制绕过" class="headerlink" title="验证机制绕过"></a>验证机制绕过</h3><blockquote>
+<ul>
+<li><p>密码重置绕过</p>
+<p>：</p>
+<ul>
+<li>在重置密码时，最后一步的令牌（Token）或验证码未与第一步的用户名&#x2F;手机号绑定。攻击者可以用自己的手机号接收验证码，但在最终提交重置请求时修改用户名为目标用户。</li>
+<li>验证码可被暴力破解（如4位数字码）。</li>
+<li>验证码前端返回（在响应体中），导致可直接获取。</li>
+</ul>
+</li>
+<li><p>短信&#x2F;邮箱轰炸</p>
+<p>：</p>
+<ul>
+<li>接口无频率限制，可无限次调用发送短信&#x2F;邮件的接口，对用户进行骚扰或消耗企业资源。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="支付逻辑漏洞"><a href="#支付逻辑漏洞" class="headerlink" title="支付逻辑漏洞"></a>支付逻辑漏洞</h3><blockquote>
+<ul>
+<li><strong>任意金额支付</strong>：在支付流程的最后一步，金额参数被从客户端提交，攻击者将其修改为0.01元或负数，从而以极低价格购买商品。</li>
+<li><strong>重放攻击</strong>：支付成功的请求被拦截并重复发送，导致多次扣款但只生成一个订单，或用户只付一次款但收到多件商品。</li>
+<li><strong>无库存检查</strong>：在并发请求下，系统未正确校验库存递减操作，导致超卖。</li>
+</ul>
+</blockquote>
+<h3 id="优惠券-折扣滥用"><a href="#优惠券-折扣滥用" class="headerlink" title="优惠券&#x2F;折扣滥用"></a>优惠券&#x2F;折扣滥用</h3><blockquote>
+<ul>
+<li><strong>无限领取</strong>：优惠券领取接口只校验了客户端状态，未在服务端校验用户是否已领取，导致可无限次领取。</li>
+<li><strong>金额篡改</strong>：优惠券面额从客户端提交，可被修改为任意大额数字。</li>
+</ul>
+</blockquote>
+<h2 id="输入处理与校验漏洞"><a href="#输入处理与校验漏洞" class="headerlink" title="输入处理与校验漏洞"></a>输入处理与校验漏洞</h2><h3 id="响应操纵"><a href="#响应操纵" class="headerlink" title="响应操纵"></a>响应操纵</h3><p>应用程序根据客户端返回的特定参数值（如<code>success=true</code>）来判断操作是否成功。</p>
+<blockquote>
+<ul>
+<li>在修改邮箱的请求中，拦截服务器返回的<code>{&quot;status&quot;: &quot;error&quot;}</code>，并将其修改为<code>{&quot;status&quot;: &quot;success&quot;}</code>，从而使前端显示修改成功，尽管后端实际执行失败。</li>
+</ul>
+</blockquote>
+<h3 id="条件竞争"><a href="#条件竞争" class="headerlink" title="条件竞争"></a>条件竞争</h3><p>一段代码的执行需要满足一系列条件，在极短的时间内（并发请求），系统的状态可能被改变，从而绕过检查。</p>
+<blockquote>
+<ul>
+<li><strong>限时优惠券</strong>：<code>检查优惠券是否有效 -&gt; 使用优惠券 -&gt; 将优惠券状态置为已使用</code>。攻击者同时发送数十个使用该优惠券的请求，在它被标记为“已使用”之前，多个请求都通过了“检查有效”这一步，从而导致一张券被多次使用。</li>
+<li><strong>余额充值</strong>：<code>检查余额 -&gt; 购买商品 -&gt; 扣款</code>。如果余额不足，但用户在“检查”后、“扣款”前瞬间充值，则可以用充值前的余额购买成功，造成“负余额”或购买失败但商品已发放。</li>
+</ul>
+</blockquote>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="密码重置令牌泄漏"><a href="#密码重置令牌泄漏" class="headerlink" title="密码重置令牌泄漏"></a>密码重置令牌泄漏</h3><blockquote>
+<ul>
+<li>重置密码的链接（含Token）被发送到用户邮箱，但该链接可能在浏览器历史、代理日志或Referer头中泄漏，导致他人可重置密码。</li>
+</ul>
+</blockquote>
+<h3 id="身份验证绕过"><a href="#身份验证绕过" class="headerlink" title="身份验证绕过"></a>身份验证绕过</h3><blockquote>
+<ul>
+<li>在登录时，修改请求参数<code>username=admin&amp;password=123&amp;role=admin</code>，后端错误地信任了客户端提交的角色字段。</li>
+<li>直接访问登录后的URL（如<code>/admin/dashboard</code>），如果Session有效则直接放行，跳过了登录步骤的校验。</li>
+</ul>
+</blockquote>
+<h3 id="API时序攻击"><a href="#API时序攻击" class="headerlink" title="API时序攻击"></a>API时序攻击</h3><blockquote>
+<ul>
+<li>在注册时，先检查用户名是否存在，再创建用户。攻击者利用检查用户名和创建用户两个步骤之间的微小时间差，通过并发请求强行注册一个已存在但已被删除（或在回收站）的用户名。</li>
+</ul>
+</blockquote>
+<h1 id="【1-2】逻辑漏洞的检测"><a href="#【1-2】逻辑漏洞的检测" class="headerlink" title="【1-2】逻辑漏洞的检测"></a>【1-2】逻辑漏洞的检测</h1><h2 id="基础准备"><a href="#基础准备" class="headerlink" title="基础准备"></a>基础准备</h2><h3 id="信息搜集"><a href="#信息搜集" class="headerlink" title="信息搜集"></a>信息搜集</h3><p>理清关键业务流程（如用户注册、登录、密码重置、下单支付、资料修改、权限管理）</p>
+<h3 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h3><p><strong>HTTP代理抓包工具</strong></p>
+<blockquote>
+<ul>
+<li><strong>HTTP代理抓包工具</strong>：<strong>Burp Suite Professional</strong> (首选)、OWASP ZAP、Fiddler。这是测试逻辑漏洞的“瑞士军刀”。</li>
+<li><strong>浏览器插件</strong>：用于快速修改和重放请求，如<code>Requestly</code>、<code>ModHeader</code>。</li>
+<li><strong>自定义脚本</strong>：用于并发攻击（条件竞争）、暴力破解等，可以用Python快速编写。</li>
+</ul>
+</blockquote>
+<h3 id="测试原则"><a href="#测试原则" class="headerlink" title="测试原则"></a>测试原则</h3><blockquote>
+<ul>
+<li><strong>篡改一切</strong>：对请求中的每一个参数、每一个URL路径、每一个Cookie值都进行篡改测试。</li>
+<li><strong>顺序错乱</strong>：尝试跳过步骤、打乱顺序、重复提交、并发提交。</li>
+<li>（<strong>权限切换</strong>：准备两个及以上相同权限（测试水平越权）和不同权限（测试垂直越权）的账户，同时抓包对比分析。）</li>
+</ul>
+</blockquote>
+<h2 id="针对漏洞"><a href="#针对漏洞" class="headerlink" title="针对漏洞"></a>针对漏洞</h2><p>推测可能出现的漏洞进行测试</p>
+<h3 id="越权"><a href="#越权" class="headerlink" title="越权"></a>越权</h3><h4 id="参数篡改"><a href="#参数篡改" class="headerlink" title="参数篡改"></a>参数篡改</h4><blockquote>
+<ul>
+<li><strong>修改ID</strong>：在请求中寻找如<code>userid</code>、<code>uid</code>、<code>id</code>、<code>account</code>等参数，尝试修改为其他用户的同类ID。这是检测<strong>水平越权</strong>最直接的方法。</li>
+<li><strong>修改路径</strong>：将请求路径中的<code>/user/</code>改为<code>/admin/</code>，或尝试访问更高权限的API端点。这是检测<strong>垂直越权</strong>的方法。</li>
+<li><strong>修改Cookie&#x2F;JWT</strong>：使用Burp的扩展（如<code>JSON Web Token</code>）解码和篡改JWT中的<code>role</code>、<code>admin</code>、<code>email</code>等字段，然后重放请求。</li>
+</ul>
+</blockquote>
+<h4 id="访问控制测试"><a href="#访问控制测试" class="headerlink" title="访问控制测试"></a>访问控制测试</h4><blockquote>
+<ul>
+<li><p>用低权限用户（如普通用户）的Cookie，直接去访问高权限用户（如管理员）的专属URL（如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/admin/deleteUser</span><br></pre></td></tr></table></figure>
+
+<p>）。</p>
+<ul>
+<li>用用户A的Cookie，去操作用户B的数据（如<code>GET /api/orders/10087</code>）。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="业务流程"><a href="#业务流程" class="headerlink" title="业务流程"></a>业务流程</h3><h4 id="验证机制绕过（密码重置）"><a href="#验证机制绕过（密码重置）" class="headerlink" title="验证机制绕过（密码重置）"></a>验证机制绕过（密码重置）</h4><blockquote>
+<ul>
+<li><p>步骤绑定测试</p>
+<p>：</p>
+<ul>
+<li>在重置密码流程中，在最后一步提交新密码时，<strong>篡改用户名&#x2F;手机号参数</strong>，试图重置他人的密码。</li>
+<li>分析整个流程，看Token是否与第一步的用户标识绑定。</li>
+</ul>
+</li>
+<li><p>验证码测试</p>
+<p>：</p>
+<ul>
+<li><strong>暴力破解</strong>：使用Burp的<code>Intruder</code>模块对4-6位数字验证码进行暴力破解。</li>
+<li><strong>有效性检测</strong>：尝试重复使用同一个验证码，看服务器是否使其一次性失效。</li>
+<li><strong>客户端泄漏</strong>：检查响应包（Response）、JS文件、Cookie中是否直接返回了验证码。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h4 id="支付逻辑漏洞-1"><a href="#支付逻辑漏洞-1" class="headerlink" title="支付逻辑漏洞"></a>支付逻辑漏洞</h4><blockquote>
+<ul>
+<li><strong>金额篡改</strong>：拦截支付确认请求，寻找如<code>amount</code>、<code>price</code>、<code>total</code>等参数，尝试修改为负数、0或极小数。</li>
+<li><strong>重放攻击</strong>：拦截支付成功的请求，直接使用Burp的<code>Repeater</code>模块多次重放，观察是否会产生多个订单或多次扣款。</li>
+<li><strong>商品信息篡改</strong>：修改<code>quantity</code>（数量）、<code>product_id</code>（商品ID）等参数，观察是否有校验。</li>
+</ul>
+</blockquote>
+<h4 id="优惠券-折扣滥用-1"><a href="#优惠券-折扣滥用-1" class="headerlink" title="优惠券&#x2F;折扣滥用"></a>优惠券&#x2F;折扣滥用</h4><blockquote>
+<ul>
+<li><strong>领取逻辑</strong>：频繁调用领取接口，看是否有次数限制（频率限制）和是否校验用户已领取状态。</li>
+<li><strong>使用逻辑</strong>：拦截使用优惠券的请求，篡改<code>coupon_value</code>（优惠金额）、<code>discount</code>（折扣）等参数。</li>
+</ul>
+</blockquote>
+<h3 id="输入处理与校验"><a href="#输入处理与校验" class="headerlink" title="输入处理与校验"></a>输入处理与校验</h3><h4 id="响应操纵-1"><a href="#响应操纵-1" class="headerlink" title="响应操纵"></a>响应操纵</h4><blockquote>
+<ul>
+<li>拦截响应，在服务器返回错误响应（如<code>{“status”: “fail”}</code>）时，将其修改为成功响应（如<code>{“status”: “success”}</code>），然后放行，观察前端应用的行为。</li>
+</ul>
+</blockquote>
+<h4 id="条件竞争-1"><a href="#条件竞争-1" class="headerlink" title="条件竞争"></a>条件竞争</h4><p>使用Burp Suite的Turbo Intruder扩展（专门为并发攻击设计）或自己编写Python多线程脚本。</p>
+<blockquote>
+<ul>
+<li><strong>优惠券</strong>：同时发送数十个甚至上百个使用同一张优惠券的请求。</li>
+<li><strong>余额</strong>：在余额不足时发起购买请求，并极短时间内并发发起充值请求。</li>
+<li><strong>抢购</strong>：并发发起大量抢购请求，测试库存锁机制。</li>
+</ul>
+</blockquote>
+<h3 id="密码重置令牌泄漏-1"><a href="#密码重置令牌泄漏-1" class="headerlink" title="密码重置令牌泄漏"></a>密码重置令牌泄漏</h3><blockquote>
+<ul>
+<li>检查重置链接中的Token是否出现在浏览器历史、服务器访问日志（如果Referer未过滤）、或网络监控流量中。这通常需要结合其他漏洞或社会工程学。</li>
+</ul>
+</blockquote>
+<h3 id="身份验证绕过-1"><a href="#身份验证绕过-1" class="headerlink" title="身份验证绕过"></a>身份验证绕过</h3><blockquote>
+<ul>
+<li><strong>参数猜测</strong>：在登录或认证请求中，尝试添加诸如<code>&amp;role=admin</code>、<code>&amp;admin=1</code>等参数。</li>
+<li><strong>直接访问</strong>：在已登录状态下，直接尝试访问登录后的页面，看是否还有二次验证。</li>
+</ul>
+</blockquote>
+<h3 id="API时序攻击-1"><a href="#API时序攻击-1" class="headerlink" title="API时序攻击"></a>API时序攻击</h3><blockquote>
+<ul>
+<li>编写脚本，在检查用户名可用性和最终注册提交两个请求之间，发起大量并发注册请求，试图“抢占”一个已删除的用户名。</li>
+</ul>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://cyan5s.github.io">cyan5s</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://cyan5s.github.io/2025/09/27/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/">http://cyan5s.github.io/2025/09/27/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E/">逻辑漏洞</a></div><div class="post-share"><div class="social-share" data-image="/img/cyan5s.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/09/27/SQL%E6%B3%A8%E5%85%A5%E5%AD%A6%E4%B9%A01/" title="SQL注入学习1"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">SQL注入学习1</div></div><div class="info-2"><div class="info-item-1">用sqli-llabs第一关来理解 前置判断是否有注入点本质是判断是否将用户的输入拼接到代码里，即用户输入可影响页面状态。 123?id=1//页面返回正常?id=1&#x27;//如果报错，则说明有注入，且闭合方式为&#x27;  输入id=1，最终生成的SQL语句是： 1SELECT * FROM users WHERE id=&#x27;1&#x27; LIMIT 0,1  输入id=1&#39;，最终生成的SQL语句是： 12SELECT * FROM users WHERE id=&#x27;1&#x27;&#x27; LIMIT 0,1            -- 闭合前引号 --^  ^-- 多出的一个引号  数据库执行该语句时报错，语法错误 输入?id=1&#39;--+，最终生成的SQL语句是： 1SELECT * FROM users WHERE id=&#x27;1&#x27;--+&#x27; LIMIT 0,1  将“’ LIMIT 0,1”注释，回显正常【“–+”“– ”“– ss”均可注释】 判断闭合方式 一、基础闭合方式1. 单引号闭合（’）1?i...</div></div></div></a><a class="pagination-related" href="/2025/09/21/%E7%BD%91%E7%AB%99%E6%A1%86%E6%9E%B6%E5%AD%A6%E4%B9%A0/" title="网站框架学习"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">网站框架学习</div></div><div class="info-2"><div class="info-item-1">【1】前端基础html&amp;css&amp;js   技术类型 主要功能 在代码中的表现形式    HTML 定义网页结构和内容 所有标签（如 &lt;div&gt;, &lt;script&gt;, &lt;style&gt;）及其属性（如 id, class, src）   CSS 定义网页元素的样式和外观 style属性内的代码 和 &lt;style&gt;标签内的代码   JS (JavaScript) 定义网页的行为和交互逻辑 &lt;script&gt;标签内的代码 或 通过 src属性引入的外部脚本   【2】PHP基本特点 服务器端执行：PHP 代码在服务器上运行，生成 HTML 后发送给浏览器，用户看不到 PHP 源码。 通常运行在 Apache 或 Nginx 服务器上。支持多种数据库，常用于构建 CMS、电商网站、论坛等。 开源  基础语法 通常嵌入在 HTML 中，以 &lt;?php开头，以 ?&gt;结尾。  注释：  单行注释：//或 #  多行注释：/* ... */    变量以 $开头，无需声明类型（动态类型语言） 123456789&l...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/cyan5s.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">cyan5s</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div><a id="card-info-btn" href="https://cyan5s.github.io/"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E3%80%901-1%E3%80%91%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.</span> <span class="toc-text">【1-1】逻辑漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9D%83%E9%99%90%E6%8F%90%E5%8D%87-%E8%B6%8A%E6%9D%83%E8%AE%BF%E9%97%AE"><span class="toc-number">1.1.</span> <span class="toc-text">权限提升&amp;越权访问</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9E%82%E7%9B%B4%E8%B6%8A%E6%9D%83"><span class="toc-number">1.1.1.</span> <span class="toc-text">垂直越权</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B0%B4%E5%B9%B3%E8%B6%8A%E6%9D%83"><span class="toc-number">1.1.2.</span> <span class="toc-text">水平越权</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E5%AE%89%E5%85%A8%E7%9A%84%E5%AF%B9%E8%B1%A1%E7%9B%B4%E6%8E%A5%E5%BC%95%E7%94%A8"><span class="toc-number">1.1.3.</span> <span class="toc-text">不安全的对象直接引用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%9A%E5%8A%A1%E6%B5%81%E7%A8%8B%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.2.</span> <span class="toc-text">业务流程漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E6%9C%BA%E5%88%B6%E7%BB%95%E8%BF%87"><span class="toc-number">1.2.1.</span> <span class="toc-text">验证机制绕过</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%AF%E4%BB%98%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.2.2.</span> <span class="toc-text">支付逻辑漏洞</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%98%E6%83%A0%E5%88%B8-%E6%8A%98%E6%89%A3%E6%BB%A5%E7%94%A8"><span class="toc-number">1.2.3.</span> <span class="toc-text">优惠券&#x2F;折扣滥用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E5%A4%84%E7%90%86%E4%B8%8E%E6%A0%A1%E9%AA%8C%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.3.</span> <span class="toc-text">输入处理与校验漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%93%8D%E5%BA%94%E6%93%8D%E7%BA%B5"><span class="toc-number">1.3.1.</span> <span class="toc-text">响应操纵</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89"><span class="toc-number">1.3.2.</span> <span class="toc-text">条件竞争</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">1.4.</span> <span class="toc-text">其他</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE%E4%BB%A4%E7%89%8C%E6%B3%84%E6%BC%8F"><span class="toc-number">1.4.1.</span> <span class="toc-text">密码重置令牌泄漏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87"><span class="toc-number">1.4.2.</span> <span class="toc-text">身份验证绕过</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#API%E6%97%B6%E5%BA%8F%E6%94%BB%E5%87%BB"><span class="toc-number">1.4.3.</span> <span class="toc-text">API时序攻击</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E3%80%901-2%E3%80%91%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E%E7%9A%84%E6%A3%80%E6%B5%8B"><span class="toc-number">2.</span> <span class="toc-text">【1-2】逻辑漏洞的检测</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E5%87%86%E5%A4%87"><span class="toc-number">2.1.</span> <span class="toc-text">基础准备</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"><span class="toc-number">2.1.1.</span> <span class="toc-text">信息搜集</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A5%E5%85%B7"><span class="toc-number">2.1.2.</span> <span class="toc-text">工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95%E5%8E%9F%E5%88%99"><span class="toc-number">2.1.3.</span> <span class="toc-text">测试原则</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%92%88%E5%AF%B9%E6%BC%8F%E6%B4%9E"><span class="toc-number">2.2.</span> <span class="toc-text">针对漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B6%8A%E6%9D%83"><span class="toc-number">2.2.1.</span> <span class="toc-text">越权</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%82%E6%95%B0%E7%AF%A1%E6%94%B9"><span class="toc-number">2.2.1.1.</span> <span class="toc-text">参数篡改</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6%E6%B5%8B%E8%AF%95"><span class="toc-number">2.2.1.2.</span> <span class="toc-text">访问控制测试</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%9A%E5%8A%A1%E6%B5%81%E7%A8%8B"><span class="toc-number">2.2.2.</span> <span class="toc-text">业务流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E6%9C%BA%E5%88%B6%E7%BB%95%E8%BF%87%EF%BC%88%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE%EF%BC%89"><span class="toc-number">2.2.2.1.</span> <span class="toc-text">验证机制绕过（密码重置）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%94%AF%E4%BB%98%E9%80%BB%E8%BE%91%E6%BC%8F%E6%B4%9E-1"><span class="toc-number">2.2.2.2.</span> <span class="toc-text">支付逻辑漏洞</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E6%83%A0%E5%88%B8-%E6%8A%98%E6%89%A3%E6%BB%A5%E7%94%A8-1"><span class="toc-number">2.2.2.3.</span> <span class="toc-text">优惠券&#x2F;折扣滥用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E5%A4%84%E7%90%86%E4%B8%8E%E6%A0%A1%E9%AA%8C"><span class="toc-number">2.2.3.</span> <span class="toc-text">输入处理与校验</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%93%8D%E5%BA%94%E6%93%8D%E7%BA%B5-1"><span class="toc-number">2.2.3.1.</span> <span class="toc-text">响应操纵</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89-1"><span class="toc-number">2.2.3.2.</span> <span class="toc-text">条件竞争</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%86%E7%A0%81%E9%87%8D%E7%BD%AE%E4%BB%A4%E7%89%8C%E6%B3%84%E6%BC%8F-1"><span class="toc-number">2.2.4.</span> <span class="toc-text">密码重置令牌泄漏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87-1"><span class="toc-number">2.2.5.</span> <span class="toc-text">身份验证绕过</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#API%E6%97%B6%E5%BA%8F%E6%94%BB%E5%87%BB-1"><span class="toc-number">2.2.6.</span> <span class="toc-text">API时序攻击</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/22/%E4%B8%8B%E6%96%AD%E7%82%B9%E7%9A%84%E6%96%B9%E6%B3%95/" title="下断点的方法">下断点的方法</a><time datetime="2025-11-22T03:52:26.000Z" title="Created 2025-11-22 11:52:26">2025-11-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/22/OD%E8%84%B1%E5%A3%B3/" title="OD脱壳">OD脱壳</a><time datetime="2025-11-22T03:45:01.000Z" title="Created 2025-11-22 11:45:01">2025-11-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/21/%E4%BD%9C%E5%93%81%E9%9B%86/" title="作品集">作品集</a><time datetime="2025-11-21T11:46:02.000Z" title="Created 2025-11-21 19:46:02">2025-11-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/10/16/%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A01/" title="信息泄露漏洞学习1">信息泄露漏洞学习1</a><time datetime="2025-10-16T12:30:21.000Z" title="Created 2025-10-16 20:30:21">2025-10-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/10/16/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/" title="信息搜集">信息搜集</a><time datetime="2025-10-16T12:30:18.000Z" title="Created 2025-10-16 20:30:18">2025-10-16</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By cyan5s</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.0.0</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.0</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

